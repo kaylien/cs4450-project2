@@ -5,23 +5,5 @@
 # is restricted to this project.
 use Mix.Config
 
-# General application configuration
-config :streaming_rooms,
-  ecto_repos: [StreamingRooms.Repo]
+import_config "config.secret.exs"
 
-# Configures the endpoint
-config :streaming_rooms, StreamingRoomsWeb.Endpoint,
-  url: [host: "localhost"],
-  secret_key_base: "2mTN6DNUjOs25yIlBL9Wp9LSkwBLVf6SvtdxNEGf1aijQZXWIvZVSwocN5F2S2Jf",
-  render_errors: [view: StreamingRoomsWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: StreamingRooms.PubSub,
-           adapter: Phoenix.PubSub.PG2]
-
-# Configures Elixir's Logger
-config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
-
-# Import environment specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"

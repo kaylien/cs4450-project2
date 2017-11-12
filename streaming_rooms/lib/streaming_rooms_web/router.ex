@@ -1,5 +1,6 @@
 defmodule StreamingRoomsWeb.Router do
   use StreamingRoomsWeb, :router
+  import StreamingRoomsWeb.Plugs
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -7,6 +8,7 @@ defmodule StreamingRoomsWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :fetch_user
   end
 
   pipeline :api do
@@ -17,6 +19,10 @@ defmodule StreamingRoomsWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+	get "/hello", HelloController, :index
+	get "/hello/:message", HelloController, :show
+	get "/sessions", SessionController, :login
+	get "/sessions/twitter", SessionController, :get_tokens 
   end
 
   # Other scopes may use custom stacks.
