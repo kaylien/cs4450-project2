@@ -20,11 +20,11 @@ defmodule StreamingRoomsWeb.SessionController do
     	oauth_token = params["oauth_token"]
     	oauth_verifier = params["oauth_verifier"]
     	result = TwitterModule.get_access_token(oauth_token, oauth_verifier)
+      IO.inspect result
     	if result == :ok do
     		get_information_of_logged_user(conn, nil)
     	else
-    		IO.puts "ERROR"
-    		redirect(conn, to: page_path(conn, :index))
+    		redirect conn, to: error_path(conn, :index)
     	end
     end
   end

@@ -24,6 +24,9 @@ defmodule StreamingRoomsWeb.Router do
 	  get "/sessions", SessionController, :login
 	  get "/sessions/twitter", SessionController, :get_tokens 
     delete "/session", SessionController, :logout
+
+    # Default path if none of the above was invoked
+    get "/error", ErrorController, :index
     get "/*path", ErrorController, :index
   end
 
