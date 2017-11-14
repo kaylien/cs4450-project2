@@ -19,14 +19,19 @@ defmodule StreamingRoomsWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-	get "/hello", HelloController, :index
-	get "/hello/:message", HelloController, :show
-	get "/sessions", SessionController, :login
-	get "/sessions/twitter", SessionController, :get_tokens 
+	  get "/hello", HelloController, :index
+  	get "/hello/:message", HelloController, :show
+	  get "/sessions", SessionController, :login
+	  get "/sessions/twitter", SessionController, :get_tokens 
+    delete "/session", SessionController, :logout
+    get "/*path", ErrorController, :index
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", StreamingRoomsWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", StreamingRoomsWeb do
+    pipe_through :api
+
+    resources "/users", UserController, except: [:new, :edit]
+  end
+
 end

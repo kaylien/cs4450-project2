@@ -15,9 +15,14 @@
     <div class="container">
       <header class="header">
         <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
+
+          <%= if @current_user do %>
+            <span class="text-light">
+              <%= @current_user.username %> |
+              <%= link("logout", to: session_path(@conn, :logout), method: :delete) %>
+            </span>
+          <% end %>
+
         </nav>
         <span class="logo"></span>
       </header>
