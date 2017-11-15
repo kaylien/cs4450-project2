@@ -21,9 +21,14 @@ defmodule StreamingRoomsWeb.Router do
     get "/", PageController, :index
 	  get "/hello", HelloController, :index
   	get "/hello/:message", HelloController, :show
+
+    # Session handlers
 	  get "/sessions", SessionController, :login
 	  get "/sessions/twitter", SessionController, :get_tokens 
     delete "/session", SessionController, :logout
+
+    # Room handler
+    resources "/rooms", RoomController
 
     # Default path if none of the above was invoked
     get "/error", ErrorController, :index

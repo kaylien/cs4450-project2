@@ -15,18 +15,18 @@ defmodule StreamingRoomsWeb.SessionController do
 
     # Gets tokens from Twitter
     def get_tokens(conn, params) do
-      if get_session(conn, :user_id) != nil do
-        redirect conn, to: hello_path(conn, :show, "Already logged in!!!")
-      else
-      	oauth_token = params["oauth_token"]
-      	oauth_verifier = params["oauth_verifier"]
-      	result = TwitterModule.get_access_token(oauth_token, oauth_verifier)
-      	if result == :ok do
-      		get_information_of_logged_user(conn, nil)
-      	else
-      		redirect conn, to: error_path(conn, :index)
-      	end
-      end
+        if get_session(conn, :user_id) != nil do
+            redirect conn, to: hello_path(conn, :show, "Already logged in!!!")
+        else
+          	oauth_token = params["oauth_token"]
+          	oauth_verifier = params["oauth_verifier"]
+          	result = TwitterModule.get_access_token(oauth_token, oauth_verifier)
+          	if result == :ok do # Could get access token
+          		  get_information_of_logged_user(conn, nil)
+          	else # Couldn't get access token
+          		  redirect conn, to: error_path(conn, :index)
+          	end
+        end
     end
 
     # Gets information from Twitter

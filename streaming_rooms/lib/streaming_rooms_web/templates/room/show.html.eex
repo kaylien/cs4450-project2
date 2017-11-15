@@ -1,0 +1,23 @@
+<h2>Show Room</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @room.name %>
+  </li>
+
+  <li>
+    <strong>Spotify link:</strong>
+    <%= @room.spotify_link %>
+  </li>
+
+  <li>
+    <strong>Youtube link:</strong>
+    <%= @room.youtube_link %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: room_path(@conn, :edit, @room) %></span>
+<span><%= link "Back", to: room_path(@conn, :index) %></span>
