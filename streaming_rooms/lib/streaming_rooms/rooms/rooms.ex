@@ -215,10 +215,14 @@ defmodule StreamingRooms.Rooms do
                 where: ru.room_id == ^room_id and ru.user_id == ^user_id,
                 select: ru.num_soundcloud_streams
     result = Repo.all(query)
-    resultIncremented = List.first(result) + 1
-    from(ru in RoomUser, where: ru.room_id == ^room_id 
-          and ru.user_id == ^user_id, update: [set: [num_soundcloud_streams: ^resultIncremented]])
-    |> Repo.update_all([])
+    if result == [] do
+      {0, nil}
+    else
+      resultIncremented = List.first(result) + 1
+      from(ru in RoomUser, where: ru.room_id == ^room_id 
+            and ru.user_id == ^user_id, update: [set: [num_soundcloud_streams: ^resultIncremented]])
+      |> Repo.update_all([])
+    end
   end
 
   # Increments by one the Youtube numbers based on the room and user
@@ -227,10 +231,14 @@ defmodule StreamingRooms.Rooms do
                 where: ru.room_id == ^room_id and ru.user_id == ^user_id,
                 select: ru.num_youtube_streams
     result = Repo.all(query)
-    resultIncremented = List.first(result) + 1
-    from(ru in RoomUser, where: ru.room_id == ^room_id 
-          and ru.user_id == ^user_id, update: [set: [num_youtube_streams: ^resultIncremented]])
-    |> Repo.update_all([])
+    if result == [] do
+      {0, nil}
+    else
+      resultIncremented = List.first(result) + 1
+      from(ru in RoomUser, where: ru.room_id == ^room_id 
+            and ru.user_id == ^user_id, update: [set: [num_youtube_streams: ^resultIncremented]])
+      |> Repo.update_all([])
+    end
   end
 
   # Gets total Soundcloud streams in one room
@@ -242,7 +250,7 @@ defmodule StreamingRooms.Rooms do
     if (result != [nil]) do
       Decimal.to_integer(List.first(result))
     else 
-      # DO SOMETHING
+      nil
     end
   end
 
@@ -256,7 +264,7 @@ defmodule StreamingRooms.Rooms do
     if (result != [nil]) do
       Decimal.to_integer(List.first(result))
     else 
-      0
+      nil
     end
   
   end

@@ -40,12 +40,54 @@ defmodule StreamingRoomsWeb.RoomUserController do
         end
     end
 
+  ################################################################################################
+  ###                                                                                          ###
+  ###                                      CUSTOM FUNCTIONS                                    ###
+  ###                                                                                          ###
+  ################################################################################################
 
 
+  ###############################################
+  ##              NUMBERS SECTION              ##
+  ###############################################
+
+  def increment_soundcloud_streams(conn, %{"room_id" => room_id, "user_id" => user_id}) do
+        result_db = Rooms.increment_soundcloud_streams(room_id, user_id)
+        if elem(result_db, 0) == 0 do
+           send_resp(conn, 404, "WRONG") 
+        else
+            send_resp(conn, 200, "OK!")
+        end
+  end
 
 
-    def what(conn, _params) do
-        IO.inspect Rooms.get_users_that_stream_the_most(1)        
-    end
+  def increment_youtube_streams(conn, %{"room_id" => room_id, "user_id" => user_id}) do
+        result_db = Rooms.increment_youtube_streams(room_id, user_id)
+        if elem(result_db, 0) == 0 do
+           send_resp(conn, 404, "WRONG") 
+        else
+            send_resp(conn, 200, "OK!")
+        end
+  end
+
+  def get_soundcloud_streams_in_room(conn, %{"room_id" => room_id}) do
+      amount_of_streams = Rooms.get_soundcloud_streams_in_room(room_id)
+      if (amount_of_streams == nil) do
+           send_resp(conn, 404, "WRONG")
+      else
+           send_resp(conn, 200, Integer.to_string(amount_of_streams))  
+      end
+  end
+
+  def get_youtube_streams_in_room(conn, %{"room_id" => room_id}) do
+      amount_of_streams = Rooms.get_youtube_streams_in_room(room_id)
+      if (amount_of_streams == nil) do
+           send_resp(conn, 404, "WRONG")
+      else
+           send_resp(conn, 200, Integer.to_string(amount_of_streams))  
+      end
+  end
+
+  
 
 end
