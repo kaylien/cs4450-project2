@@ -48,46 +48,80 @@ defmodule StreamingRoomsWeb.RoomUserController do
 
 
   ###############################################
+  ##           ERROR MESSAGES SECTION          ##
+  ###############################################
+
+
+  defp send_error_message(conn, status_code, message) do
+      send_resp(conn, status_code, Poison.encode!(%{:result => :error, :message => message}))
+  end
+
+  defp internal_error_message(conn) do
+      conn |> render(500, Poison.encode!(%{:result => :error, :message => "There was an error internal error, try again!"}))
+  end
+
+
+  ###############################################
   ##              NUMBERS SECTION              ##
   ###############################################
 
 
   def increment_soundcloud_streams(conn, %{"room_id" => room_id, "user_id" => user_id}) do
         result_db = Rooms.increment_soundcloud_streams(room_id, user_id)
-        if elem(result_db, 0) == 0 do
-           send_resp(conn, 404, "WRONG") 
-        else
-            send_resp(conn, 200, "OK!")
+        try do
+            if elem(result_db, 0) == 0 do
+               send_error_message(conn, 404, "Incorrect user and/or room")
+            else
+                send_resp(conn, 200, Poison.encode!(%{:result => :ok}))
+            end
+        rescue 
+           _e in Poison.EncodeError ->
+              internal_error_message(conn)
         end
   end
 
 
   def increment_youtube_streams(conn, %{"room_id" => room_id, "user_id" => user_id}) do
         result_db = Rooms.increment_youtube_streams(room_id, user_id)
-        if elem(result_db, 0) == 0 do
-           send_resp(conn, 404, "WRONG") 
-        else
-            send_resp(conn, 200, "OK!")
+        try do
+            if elem(result_db, 0) == 0 do
+               send_error_message(conn, 404, "Incorrect user and/or room")
+            else
+                send_resp(conn, 200, Poison.encode!(%{:result => :ok}))
+            end
+        rescue 
+           _e in Poison.EncodeError ->
+              internal_error_message(conn)
         end
   end
 
 
   def get_soundcloud_streams_in_room(conn, %{"room_id" => room_id}) do
       amount_of_streams = Rooms.get_soundcloud_streams_in_room(room_id)
-      if (amount_of_streams == nil) do
-           send_resp(conn, 404, "WRONG")
-      else
-           send_resp(conn, 200, Integer.to_string(amount_of_streams))  
+      try do
+          if (amount_of_streams == nil) do
+               send_error_message(conn, 404, "There are no users in the room supplied")
+          else
+               send_resp(conn, 200, Poison.encode!(%{:result => :ok, :soundcloud_streams => amount_of_streams})) 
+          end
+      rescue 
+          _e in Poison.EncodeError ->
+            internal_error_message(conn)
       end
   end
 
 
   def get_youtube_streams_in_room(conn, %{"room_id" => room_id}) do
       amount_of_streams = Rooms.get_youtube_streams_in_room(room_id)
-      if (amount_of_streams == nil) do
-           send_resp(conn, 404, "WRONG")
-      else
-           send_resp(conn, 200, Integer.to_string(amount_of_streams))  
+      try do
+          if (amount_of_streams == nil) do
+               send_error_message(conn, 404, "There are no users in the room supplied")
+          else
+               send_resp(conn, 200, Poison.encode!(%{:result => :ok, :youtube_streams => amount_of_streams}))
+          end
+      rescue 
+          _e in Poison.EncodeError ->
+            internal_error_message(conn)
       end
   end
 
@@ -95,7 +129,7 @@ defmodule StreamingRoomsWeb.RoomUserController do
   def get_users_that_stream_the_most(conn, %{"room_id" => room_id}) do
         list_of_users = Rooms.get_users_that_stream_the_most(room_id)
         result = Enum.into(list_of_users, %{})
-        result_with_users = %{:list => result}
+        result_with_users = %{:ranking => result}
         # Try to convert map to json
         try do
             json_result = Poison.encode!(Map.put(result_with_users, :result, :ok))
@@ -104,11 +138,62 @@ defmodule StreamingRoomsWeb.RoomUserController do
             |> send_resp(200, json_result)
         rescue 
             _e in Poison.EncodeError ->
-                conn
-                |> send_resp(500, Poison.encode!(
-                    %{:result => :error, :message => "There was an error internal error, try again!"}
-                ))
+                internal_error_message(conn)
         end
   end
+
+
+  ###############################################
+  ##             USER-ROOM FUNCTIONS           ##
+  ###############################################
+
+  def get_rooms_user_is_joined_to(conn, %{"user_id" => user_id}) do
+      result = Rooms.get_rooms_user_is_joined_to(user_id)
+      if result == nil do
+            send_error_message(conn, 404, "The user supplied is invalid")
+      else
+          result_as_map = Enum.map(result, fn {id, name} -> %{:room_id => id, :room_name => name} end)
+          try do
+                auxiliar = Map.put(%{:result => :ok}, :list, result_as_map)
+                send_resp(conn, 200, Poison.encode!(auxiliar))
+          rescue 
+                _e in Poison.EncodeError ->
+                    internal_error_message(conn)
+          end
+        end
+  end
+
+  def get_rooms_user_is_not_joined_to(conn, %{"user_id" => user_id}) do
+      result = Rooms.get_rooms_user_is_not_joined_to(user_id)
+      if result == nil do
+            send_error_message(conn, 404, "The user supplied is invalid")
+      else
+          result_as_map = Enum.map(result, fn {id, name} -> %{:room_id => id, :room_name => name} end)
+          try do
+                auxiliar = Map.put(%{:result => :ok}, :list, result_as_map)
+                send_resp(conn, 200, Poison.encode!(auxiliar))
+          rescue 
+                _e in Poison.EncodeError ->
+                    internal_error_message(conn)
+          end
+      end
+  end
+
+  def get_users_currently_in_room(conn, %{"room_id" => room_id}) do
+      result = Rooms.get_users_currently_in_room(room_id)
+      if result == nil do
+            send_error_message(conn, 404, "The room supplied is invalid")
+      else
+          result_as_map = Enum.map(result, fn {id, username} -> %{:user_id => id, :username => username} end)
+          try do
+                auxiliar = Map.put(%{:result => :ok}, :list, result_as_map)
+                send_resp(conn, 200, Poison.encode!(auxiliar))
+          rescue 
+                _e in Poison.EncodeError ->
+                    internal_error_message(conn)
+          end
+      end
+  end
+
 
 end

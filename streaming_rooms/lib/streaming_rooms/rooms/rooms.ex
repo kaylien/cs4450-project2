@@ -211,60 +211,80 @@ defmodule StreamingRooms.Rooms do
 
   # Increments by one the Soundcloud numbers based on the room and user
   def increment_soundcloud_streams(room_id, user_id) do
-    query = from ru in RoomUser,
-                where: ru.room_id == ^room_id and ru.user_id == ^user_id,
-                select: ru.num_soundcloud_streams
-    result = Repo.all(query)
-    if result == [] do
-      {0, nil}
-    else
-      resultIncremented = List.first(result) + 1
-      from(ru in RoomUser, where: ru.room_id == ^room_id 
-            and ru.user_id == ^user_id, update: [set: [num_soundcloud_streams: ^resultIncremented]])
-      |> Repo.update_all([])
+    try do
+        query = from ru in RoomUser,
+                    where: ru.room_id == ^room_id and ru.user_id == ^user_id,
+                    select: ru.num_soundcloud_streams
+        result = Repo.all(query)
+        if result == [] do
+          {0, nil}
+        else
+          resultIncremented = List.first(result) + 1
+          from(ru in RoomUser, where: ru.room_id == ^room_id 
+                and ru.user_id == ^user_id, update: [set: [num_soundcloud_streams: ^resultIncremented]])
+          |> Repo.update_all([])
+        end
+    rescue 
+        _e in Ecto.Query.CastError ->
+          {0, nil}
     end
   end
 
   # Increments by one the Youtube numbers based on the room and user
   def increment_youtube_streams(room_id, user_id) do
-    query = from ru in RoomUser,
-                where: ru.room_id == ^room_id and ru.user_id == ^user_id,
-                select: ru.num_youtube_streams
-    result = Repo.all(query)
-    if result == [] do
-      {0, nil}
-    else
-      resultIncremented = List.first(result) + 1
-      from(ru in RoomUser, where: ru.room_id == ^room_id 
-            and ru.user_id == ^user_id, update: [set: [num_youtube_streams: ^resultIncremented]])
-      |> Repo.update_all([])
+    try do
+        query = from ru in RoomUser,
+                    where: ru.room_id == ^room_id and ru.user_id == ^user_id,
+                    select: ru.num_youtube_streams
+        result = Repo.all(query)
+        if result == [] do
+          {0, nil}
+        else
+          resultIncremented = List.first(result) + 1
+          from(ru in RoomUser, where: ru.room_id == ^room_id 
+                and ru.user_id == ^user_id, update: [set: [num_youtube_streams: ^resultIncremented]])
+          |> Repo.update_all([])
+        end
+    rescue 
+        _e in Ecto.Query.CastError ->
+          {0, nil}
     end
   end
 
   # Gets total Soundcloud streams in one room
   def get_soundcloud_streams_in_room(room_id) do
-    query = from ru in RoomUser,
-            where: ru.room_id == ^room_id,
-            select: sum(ru.num_soundcloud_streams)
-    result = Repo.all(query)
-    if (result != [nil]) do
-      Decimal.to_integer(List.first(result))
-    else 
-      nil
+    try do
+        query = from ru in RoomUser,
+                where: ru.room_id == ^room_id,
+                select: sum(ru.num_soundcloud_streams)
+        result = Repo.all(query)
+        if (result != [nil]) do
+          Decimal.to_integer(List.first(result))
+        else 
+          nil
+        end
+    rescue 
+        _e in Ecto.Query.CastError ->
+          nil
     end
   end
 
   # Gets total Youtube streams in one room
   def get_youtube_streams_in_room(room_id) do
-    query = from ru in RoomUser,
-            where: ru.room_id == ^room_id,
-            select: sum(ru.num_youtube_streams)
+    try do
+      query = from ru in RoomUser,
+              where: ru.room_id == ^room_id,
+              select: sum(ru.num_youtube_streams)
 
-    result = Repo.all(query)
-    if (result != [nil]) do
-      Decimal.to_integer(List.first(result))
-    else 
-      nil
+      result = Repo.all(query)
+      if (result != [nil]) do
+        Decimal.to_integer(List.first(result))
+      else 
+        nil
+      end
+    rescue 
+      _e in Ecto.Query.CastError ->
+        nil
     end
   
   end
@@ -289,29 +309,48 @@ defmodule StreamingRooms.Rooms do
   ###############################################
 
   def get_rooms_user_is_joined_to(user_id) do
-      query = from ru in RoomUser,
-                join: r in Room,
-                where: ru.user_id == ^user_id and ru.room_id == r.id and ru.joined == true,
-                select: r
-      Repo.all(query)
+      try do
+        query = from ru in RoomUser,
+                  join: r in Room,
+                  where: ru.user_id == ^user_id and ru.room_id == r.id and ru.joined == true,
+                  select: {r.id, r.name}
+        Repo.all(query)
+      rescue 
+        _e in Ecto.Query.CastError ->
+          nil # Return empty list if room_id is not an integer
+      end
   end
 
   def get_rooms_user_is_not_joined_to(user_id) do
-      result = get_rooms_user_is_joined_to(user_id)
-      ids = Enum.map(result, fn x -> x.id end) # Get just the ids of the rooms
-      query = from r in Room,
-                where: r.id not in ^ids,
-                limit: 30,
-                select: r
-      Repo.all(query)
+      try do
+          result = get_rooms_user_is_joined_to(user_id)
+          if result == nil do
+            nil
+          else
+            ids = Enum.map(result, fn {id, name} -> id end) # Get just the ids of the rooms
+            query = from r in Room,
+                      where: r.id not in ^ids,
+                      limit: 30,
+                      select: {r.id, r.name}
+            Repo.all(query)
+          end
+      rescue 
+        _e in Ecto.Query.CastError ->
+          nil # Return empty list if room_id is not an integer
+      end
   end
 
   def get_users_currently_in_room(room_id) do
-      query = from ru in RoomUser,
-                join: u in StreamingRooms.Accounts.User,
-                where: ru.room_id == ^room_id and ru.user_id == u.id and ru.in_room == true,
-                select: u
-      Repo.all(query)
+      try do
+        query = from ru in RoomUser,
+                  join: u in StreamingRooms.Accounts.User,
+                  where: ru.room_id == ^room_id and ru.user_id == u.id and ru.in_room == true,
+                  select: {u.id, u.username}
+        Repo.all(query)
+      rescue 
+        _e in Ecto.Query.CastError ->
+          nil # Return empty list if room_id is not an integer
+      end
   end
 
 end

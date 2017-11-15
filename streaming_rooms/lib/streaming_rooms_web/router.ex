@@ -44,11 +44,14 @@ defmodule StreamingRoomsWeb.Router do
     resources "/users", UserController, except: [:new, :edit]
     resources "/rooms_users", RoomUserController, except: [:new, :edit]
 
-    patch "/rooms_users/:room_id/:user_id/spotify", RoomUserController, :increment_soundcloud_streams
+    patch "/rooms_users/:room_id/:user_id/soundcloud", RoomUserController, :increment_soundcloud_streams
     patch "/rooms_users/:room_id/:user_id/youtube", RoomUserController, :increment_youtube_streams
-    get "/rooms_users/:room_id/spotify", RoomUserController, :get_soundcloud_streams_in_room
-    get "/rooms_users/:room_id/youtube", RoomUserController, :get_youtube_streams_in_room
-    get "/rooms_users/:room_id/ranking", RoomUserController, :get_users_that_stream_the_most
+    get "/rooms_users/:room_id/soundcloud", RoomUserController, :get_soundcloud_streams_in_room
+    get "/rooms_users/rooms/:room_id/youtube", RoomUserController, :get_youtube_streams_in_room
+    get "/rooms_users/rooms/:room_id/ranking", RoomUserController, :get_users_that_stream_the_most
+    get "/rooms_users/users/:user_id/joined", RoomUserController, :get_rooms_user_is_joined_to
+    get "/rooms_users/users/:user_id/not_joined", RoomUserController, :get_rooms_user_is_not_joined_to
+    get "/rooms_users/rooms/:room_id/in_room", RoomUserController, :get_users_currently_in_room
 
   end
 
