@@ -271,11 +271,16 @@ defmodule StreamingRooms.Rooms do
 
   # Gets list of users that stream the most based on both Youtube + Soundcloud numbers
   def get_users_that_stream_the_most(room_id) do
-    query = from ru in RoomUser,
-            where: ru.room_id == ^room_id,
-            order_by: [desc: fragment("? + ?", ru.num_youtube_streams, ru.num_soundcloud_streams)],
-            select: {ru.user_id, fragment("? + ?", ru.num_youtube_streams, ru.num_soundcloud_streams)}
-    Repo.all(query)
+    try do
+      query = from ru in RoomUser,
+              join: u in StreamingRooms.Accounts.User,
+              where: ru.room_id == ^room_id and ru.user_id == u.id,
+              select: {u.username, fragment("? + ?", ru.num_youtube_streams, ru.num_soundcloud_streams)}
+      Repo.all(query)
+    rescue 
+      _e in Ecto.Query.CastError ->
+        [] # Return empty list if room_id is not an integer
+    end
   end
 
 
