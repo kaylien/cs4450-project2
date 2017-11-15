@@ -30,6 +30,8 @@ defmodule StreamingRoomsWeb.Router do
     # Room handler
     resources "/rooms", RoomController
 
+    get "/holache", RoomUserController, :what
+
     # Default path if none of the above was invoked
     get "/error", ErrorController, :index
     get "/*path", ErrorController, :index
@@ -40,6 +42,7 @@ defmodule StreamingRoomsWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
+    resources "/rooms_users", RoomUserController, except: [:new, :edit]
   end
 
 end

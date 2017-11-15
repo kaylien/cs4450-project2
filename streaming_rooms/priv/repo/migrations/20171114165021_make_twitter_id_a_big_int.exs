@@ -7,4 +7,5 @@ defmodule StreamingRooms.Repo.Migrations.MakeTwitterIdABigInt do
 	  add :twitter_id, :bigint
 	end
   end
+  
 end

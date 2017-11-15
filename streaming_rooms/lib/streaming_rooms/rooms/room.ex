@@ -6,9 +6,9 @@ defmodule StreamingRooms.Rooms.Room do
 
   schema "rooms" do
     field :name, :string
-    field :spotify_link, :string
+    field :soundcloud_link, :string
     field :youtube_link, :string
-    belongs_to :admin_id, StreamingRooms.Accounts.User
+    belongs_to :admin, StreamingRooms.Accounts.User
 
     timestamps()
   end
@@ -16,7 +16,7 @@ defmodule StreamingRooms.Rooms.Room do
   @doc false
   def changeset(%Room{} = room, attrs) do
     room
-    |> cast(attrs, [:name, :spotify_link, :youtube_link])
+    |> cast(attrs, [:name, :soundcloud_link, :youtube_link])
     |> validate_required([:name])
   end
 end

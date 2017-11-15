@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Spotify link</th>
+      <th>Soundcloud link</th>
       <th>Youtube link</th>
 
       <th></th>
@@ -14,7 +14,7 @@
 <%= for room <- @rooms do %>
     <tr>
       <td><%= room.name %></td>
-      <td><%= room.spotify_link %></td>
+      <td><%= room.soundcloud_link %></td>
       <td><%= room.youtube_link %></td>
 
       <td class="text-right">

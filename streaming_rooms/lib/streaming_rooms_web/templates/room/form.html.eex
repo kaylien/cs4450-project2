@@ -12,9 +12,9 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :spotify_link, class: "control-label" %>
-    <%= text_input f, :spotify_link, class: "form-control" %>
-    <%= error_tag f, :spotify_link %>
+    <%= label f, :soundcloud_link, class: "control-label" %>
+    <%= text_input f, :soundcloud_link, class: "form-control" %>
+    <%= error_tag f, :soundcloud_link %>
   </div>
 
   <div class="form-group">

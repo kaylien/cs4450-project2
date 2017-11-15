@@ -8,8 +8,8 @@
   </li>
 
   <li>
-    <strong>Spotify link:</strong>
-    <%= @room.spotify_link %>
+    <strong>Soundcloud link:</strong>
+    <%= @room.soundcloud_link %>
   </li>
 
   <li>
