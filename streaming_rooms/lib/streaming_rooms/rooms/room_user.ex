@@ -19,6 +19,7 @@ defmodule StreamingRooms.Rooms.RoomUser do
         room_user
         |> cast(attrs, [:num_youtube_streams, :num_soundcloud_streams, :in_room, :joined, :room_id, :user_id])
         |> validate_required([:user_id, :room_id])
+        |> unique_constraint(:room_user_unique, name: :room_user_index)
         |> assoc_constraint(:room)
         |> assoc_constraint(:user)
     end
