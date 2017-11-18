@@ -148,6 +148,18 @@ defmodule StreamingRoomsWeb.RoomUserController do
   ##             USER-ROOM FUNCTIONS           ##
   ###############################################
 
+  def create_room_user(conn, %{"room_id" => room_id, "user_id" => user_id}) do
+      case Rooms.create_room_user(%{:room_id => room_id, :user_id => user_id}) do
+        {:ok, result} -> 
+            IO.inspect result
+            redirect(conn, to: room_path(conn, :show, room_id))
+        {:error, error} -> 
+            IO.inspect "ERROR"
+            IO.inspect error
+            redirect(conn, to: page_path(conn, :index))
+      end
+  end
+
   def get_rooms_user_is_joined_to(conn, %{"user_id" => user_id}) do
       result = Rooms.get_rooms_user_is_joined_to(user_id)
       if result == nil do
@@ -169,14 +181,15 @@ defmodule StreamingRoomsWeb.RoomUserController do
       if result == nil do
             send_error_message(conn, 404, "The user supplied is invalid")
       else
-          result_as_map = Enum.map(result, fn {id, name} -> %{:room_id => id, :room_name => name} end)
-          try do
-                auxiliar = Map.put(%{:result => :ok}, :list, result_as_map)
-                send_resp(conn, 200, Poison.encode!(auxiliar))
-          rescue 
-                _e in Poison.EncodeError ->
-                    internal_error_message(conn)
-          end
+          result_as_map = Enum.map(result, fn {id, name} -> %{:id => id, :name => name} end)
+          render(conn, "main.html", rooms: result_as_map)
+          # try do
+          #       auxiliar = Map.put(%{:result => :ok}, :list, result_as_map)
+          #       send_resp(conn, 200, Poison.encode!(auxiliar))
+          # rescue 
+          #       _e in Poison.EncodeError ->
+          #           internal_error_message(conn)
+          # end
       end
   end
 

@@ -13,17 +13,60 @@
 
   <div class="form-group">
     <%= label f, :soundcloud_link, class: "control-label" %>
-    <%= text_input f, :soundcloud_link, class: "form-control" %>
+    <%= text_input f, :soundcloud_link, id: "soundcloud_link_id", class: "form-control" %>
     <%= error_tag f, :soundcloud_link %>
   </div>
 
   <div class="form-group">
     <%= label f, :youtube_link, class: "control-label" %>
-    <%= text_input f, :youtube_link, class: "form-control" %>
+    <%= text_input f, :youtube_link, id: "youtube_link_id", class: "form-control" %>
     <%= error_tag f, :youtube_link %>
   </div>
 
   <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
+    <%= hidden_input f, :admin_id, class: "form-control", value: @current_user.id  %>
+    <%= error_tag f, :admin_id %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Submit", id: "submit_button", class: "btn btn-primary" %>
   </div>
 <% end %>
+
+<script>
+
+    document.getElementsByTagName('body')[0].onload = function(){
+        var button = $("#submit_button")[0];
+        button.enabled = false;
+        var youtube_link = $("#youtube_link_id")[0];
+        youtube_link.addEventListener('input', function(event) { 
+            video_id = checkCorrectYoutubeLink(youtube_link.value);
+            console.log(video_id);
+            if (video_id == null){
+                console.log("Invalid link");
+            }else{
+                console.log("Valid link: " + video_id);
+            }
+        });
+    };
+
+    function checkCorrectYoutubeLink(youtube_link){
+        if (youtube_link != ""){
+            var video_id = youtube_link.split('v=');
+            if (video_id.length > 1){
+                var ampersandPosition = video_id[1].indexOf('&');
+                if(ampersandPosition != -1) {
+                    video_id = video_id[1].substring(0, ampersandPosition);
+                    return video_id;
+                }else{
+                    return video_id[1];
+                }
+            }else{
+                return null;
+            }
+        }else{
+            return "";
+        }
+    }
+
+</script>

@@ -23,7 +23,7 @@ import "phoenix_html"
 import SC from './soundcloud_script'
 import SoundcloudModule from './soundcloud_handler'
 
-if (document.getElementById("soundcloud_player").length != 0){
+if (document.getElementById("soundcloud_player") != undefined){
 
 	document.getElementsByTagName("body")[0].onload = function(){
 		SoundcloudModule.runSoundcloud();

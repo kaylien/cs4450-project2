@@ -16,7 +16,7 @@ defmodule StreamingRooms.Rooms.Room do
   @doc false
   def changeset(%Room{} = room, attrs) do
     room
-    |> cast(attrs, [:name, :soundcloud_link, :youtube_link])
+    |> cast(attrs, [:name, :soundcloud_link, :youtube_link, :admin_id])
     |> validate_required([:name])
   end
 end
