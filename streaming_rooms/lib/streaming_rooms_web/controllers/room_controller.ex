@@ -36,12 +36,12 @@ defmodule StreamingRoomsWeb.RoomController do
 
   def show(conn, %{"id" => id}) do
       result = Rooms.is_user_joined_to_room(conn.assigns.current_user.id, id)
-      if result == nil do
-            redirect(conn, to: hello_path(conn, :index))
+      if result == nil do # User doesn't belong to room
+            redirect(conn, to: room_user_path(conn, :get_rooms_user_is_not_joined_to))
       else
           if result == [] do # User doesn't belong to room
               conn
-              |> redirect(to: page_path(conn, :index))
+              |> redirect(to: room_user_path(conn, :get_rooms_user_is_not_joined_to))
           else # User belongs to room
               room = Rooms.get_room!(id)
               render(conn, "show.html", room: room)

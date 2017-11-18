@@ -36,7 +36,7 @@ defmodule StreamingRoomsWeb.Router do
     get "/rooms_users/users/:user_id/joined", RoomUserController, :get_rooms_user_is_joined_to
 
     # Main page
-    get "/rooms_users/main", RoomUserController, :get_rooms_user_is_not_joined_to
+    get "/main", RoomUserController, :get_rooms_user_is_not_joined_to
     post "/rooms_users/:room_id/:user_id", RoomUserController, :create_room_user
 
   #  get "/holache", RoomUserController, :what

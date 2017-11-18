@@ -15,9 +15,7 @@ defmodule StreamingRoomsWeb.Plugs do
     def redirect_depending_on_status(conn, _opts) do
         user_id = get_session(conn, :user_id)
         request_path = conn.request_path
-        IO.inspect request_path
         if (request_path == "/" || request_path == "/hello") do
-           IO.inspect "KE"
            conn 
         else
             if ((request_path == "/sessions" || request_path == "/sessions/twitter") && user_id) do
