@@ -14,7 +14,7 @@ defmodule StreamingRoomsWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    #plug :fetch_user
+    plug :fetch_user
     #plug :redirect_depending_on_status
   end
 

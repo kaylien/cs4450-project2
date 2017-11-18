@@ -22,8 +22,11 @@ import "phoenix_html"
 
 import SC from './soundcloud_script'
 import SoundcloudModule from './soundcloud_handler'
-import "./youtube_handler"
 
 if (document.getElementById("soundcloud_player").length != 0){
-	document.getElementsByTagName("body")[0].onload = SoundcloudModule.runSoundcloud();
+
+	document.getElementsByTagName("body")[0].onload = function(){
+		SoundcloudModule.runSoundcloud();
+	}
+
 }

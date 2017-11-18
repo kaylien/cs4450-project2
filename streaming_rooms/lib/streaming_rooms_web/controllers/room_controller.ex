@@ -26,8 +26,18 @@ defmodule StreamingRoomsWeb.RoomController do
   end
 
   def show(conn, %{"id" => id}) do
-    room = Rooms.get_room!(id)
-    render(conn, "show.html", room: room)
+      result = Rooms.is_user_joined_to_room(conn.assigns.current_user.id, id)
+      if result == nil do
+            redirect(conn, to: hello_path(conn, :index))
+      else
+          if result == [] do # User doesn't belong to room
+              conn
+              |> redirect(to: page_path(conn, :index))
+          else # User belongs to room
+              room = Rooms.get_room!(id)
+              render(conn, "show.html", room: room)
+          end
+      end
   end
 
   def edit(conn, %{"id" => id}) do
@@ -57,4 +67,5 @@ defmodule StreamingRoomsWeb.RoomController do
     |> put_flash(:info, "Room deleted successfully.")
     |> redirect(to: room_path(conn, :index))
   end
+
 end

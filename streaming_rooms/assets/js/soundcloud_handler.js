@@ -3,7 +3,8 @@ export var SoundcloudModule = {
     runSoundcloud: function(){
         var widget = SC.Widget("soundcloud_player");
 
-        var songUrl = "https://soundcloud.com/scumgang6ix9ine/gummo-prod-pierre-bourne";
+        var songUrl = document.querySelector("#soundcloud_id").getAttribute("data-url");
+        var roomId = document.querySelector("#youtube_id").getAttribute("room_id");
 
         // Set listeners
         widget.bind(SC.Widget.Events.READY, onPlayerReady);
@@ -48,6 +49,7 @@ export var SoundcloudModule = {
                     timeElapsedOfSoundcloudTimer = 0;
                     if (endedAfterEnoughTime){
                         console.log("Stream counts!");
+                        
                     }else{
                         console.log("Stream doesn't count!");
                     }

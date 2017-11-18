@@ -308,6 +308,18 @@ defmodule StreamingRooms.Rooms do
   ##             USER-ROOM FUNCTIONS           ##
   ###############################################
 
+  def is_user_joined_to_room(user_id, room_id) do
+      try do
+        query = from ru in RoomUser,
+                  where: ru.user_id == ^user_id and ru.room_id == ^room_id and ru.joined == true,
+                  select: ru
+        Repo.all(query)
+      rescue 
+        _e in Ecto.Query.CastError ->
+          nil # Return empty list if room_id is not an integer
+      end
+  end
+
   def get_rooms_user_is_joined_to(user_id) do
       try do
         query = from ru in RoomUser,
