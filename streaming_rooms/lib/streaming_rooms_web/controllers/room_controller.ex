@@ -17,11 +17,20 @@ defmodule StreamingRoomsWeb.RoomController do
   def create(conn, %{"room" => room_params}) do
     case Rooms.create_room(room_params) do
       {:ok, room} ->
-        conn
-        |> put_flash(:info, "Room created successfully.")
-        |> redirect(to: room_path(conn, :show, room))
+          case Rooms.create_room_user(%{:room_id => room.id, :user_id => conn.assigns.current_user.id}) do
+              {:ok, result} -> 
+                  conn
+                  |> put_flash(:info, "Room created successfully!")
+                  |> redirect(to: room_path(conn, :show, room.id))
+              {:error, error} ->
+                  Rooms.delete_room(room)
+                  conn
+                  |> put_flash(:error, "Room couldn't be created!")
+                  |> redirect(to: room_user_path(conn, :get_rooms_user_is_not_joined_to))
+          end
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+          conn
+          |> render("new.html", changeset: changeset)
     end
   end
 
