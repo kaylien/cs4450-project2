@@ -32,6 +32,8 @@ defmodule StreamingRoomsWeb.Router do
 
     # Room handler
     resources "/rooms", RoomController
+    
+    get "/rooms_users/users/:user_id/joined", RoomUserController, :get_rooms_user_is_joined_to
 
   #  get "/holache", RoomUserController, :what
 
@@ -52,7 +54,7 @@ defmodule StreamingRoomsWeb.Router do
     get "/rooms_users/:room_id/soundcloud", RoomUserController, :get_soundcloud_streams_in_room
     get "/rooms_users/rooms/:room_id/youtube", RoomUserController, :get_youtube_streams_in_room
     get "/rooms_users/rooms/:room_id/ranking", RoomUserController, :get_users_that_stream_the_most
-    get "/rooms_users/users/:user_id/joined", RoomUserController, :get_rooms_user_is_joined_to
+    #get "/rooms_users/users/:user_id/joined", RoomUserController, :get_rooms_user_is_joined_to
     get "/rooms_users/users/:user_id/not_joined", RoomUserController, :get_rooms_user_is_not_joined_to
     get "/rooms_users/rooms/:room_id/in_room", RoomUserController, :get_users_currently_in_room
 

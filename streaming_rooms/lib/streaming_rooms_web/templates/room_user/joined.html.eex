@@ -1,0 +1,23 @@
+<h2>Listing Rooms</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Id</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for room <- @rooms do %>
+    <tr>
+	    <td><%= room.name %></td>
+	    <td><%= room.id %></td>
+		<td><span><%= link "Leave", to: page_path(@conn, :index), class: "btn btn-default btn-xs" %></span></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Room", to: room_path(@conn, :new) %></span>
