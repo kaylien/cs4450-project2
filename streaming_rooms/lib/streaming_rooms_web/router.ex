@@ -9,13 +9,13 @@ defmodule StreamingRoomsWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_user
-    plug :redirect_depending_on_status
+    #plug :redirect_depending_on_status
   end
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug :fetch_user
-    plug :redirect_depending_on_status
+    #plug :fetch_user
+    #plug :redirect_depending_on_status
   end
 
   scope "/", StreamingRoomsWeb do

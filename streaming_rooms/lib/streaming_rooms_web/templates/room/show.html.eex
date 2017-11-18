@@ -19,5 +19,12 @@
 
 </ul>
 
+  <!-- Here's going to be the video -->
+  <div id="youtubePlayer"></div>
+
+  <iframe id="soundcloud_player" width="400px" height="166px" scrolling="no" frameborder="no"
+      src="https://w.soundcloud.com/player/?url=https://soundcloud.com/scumgang6ix9ine/gummo-prod-pierre-bourne">
+  </iframe>
+
 <span><%= link "Edit", to: room_path(@conn, :edit, @room) %></span>
 <span><%= link "Back", to: room_path(@conn, :index) %></span>

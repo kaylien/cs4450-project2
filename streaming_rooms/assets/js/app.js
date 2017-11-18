@@ -19,3 +19,11 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+import SC from './soundcloud_script'
+import SoundcloudModule from './soundcloud_handler'
+import "./youtube_handler"
+
+if (document.getElementById("soundcloud_player").length != 0){
+	document.getElementsByTagName("body")[0].onload = SoundcloudModule.runSoundcloud();
+}

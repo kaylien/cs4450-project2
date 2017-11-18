@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello StreamingRooms!</title>
+    <title>Streaming rooms</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
@@ -18,8 +18,7 @@
 
           <%= if @current_user do %>
             <span class="text-light">
-              <%= @current_user.username %> |
-              <%= link("logout", to: session_path(@conn, :logout), method: :delete) %>
+              <%= @current_user.username %> | <%= link("logout", to: session_path(@conn, :logout), method: :delete) %>
             </span>
           <% end %>
 
