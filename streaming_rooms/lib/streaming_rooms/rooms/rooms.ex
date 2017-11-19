@@ -261,11 +261,11 @@ defmodule StreamingRooms.Rooms do
         if (result != [nil]) do
           Decimal.to_integer(List.first(result))
         else 
-          nil
+          0
         end
     rescue 
         _e in Ecto.Query.CastError ->
-          nil
+          0
     end
   end
 
@@ -278,13 +278,13 @@ defmodule StreamingRooms.Rooms do
 
       result = Repo.all(query)
       if (result != [nil]) do
-        Decimal.to_integer(List.first(result))
+          Decimal.to_integer(List.first(result))
       else 
-        nil
+          0
       end
     rescue 
       _e in Ecto.Query.CastError ->
-        nil
+          0
     end
   
   end
@@ -295,7 +295,8 @@ defmodule StreamingRooms.Rooms do
       query = from ru in RoomUser,
               join: u in StreamingRooms.Accounts.User,
               where: ru.room_id == ^room_id and ru.user_id == u.id,
-              select: {u.username, fragment("? + ?", ru.num_youtube_streams, ru.num_soundcloud_streams)}
+              select: {u.username, fragment("? + ?", ru.num_youtube_streams, ru.num_soundcloud_streams)},
+              order_by: [desc: [fragment("? + ?", ru.num_youtube_streams, ru.num_soundcloud_streams)]]
       Repo.all(query)
     rescue 
       _e in Ecto.Query.CastError ->
@@ -361,7 +362,7 @@ defmodule StreamingRooms.Rooms do
           if result == nil do
             nil
           else
-            ids = Enum.map(result, fn {id, name} -> id end) # Get just the ids of the rooms
+            ids = Enum.map(result, fn {id, _name} -> id end) # Get just the ids of the rooms
             query = from r in Room,
                       where: r.id not in ^ids,
                       limit: 30,

@@ -14,8 +14,9 @@ defmodule StreamingRoomsWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    # plug :fetch_user
-    #plug :redirect_depending_on_status
+    plug :fetch_session
+    plug :fetch_user
+    # plug :redirect_depending_on_status
   end
 
   scope "/", StreamingRoomsWeb do
@@ -31,15 +32,13 @@ defmodule StreamingRoomsWeb.Router do
     delete "/session", SessionController, :logout
 
     # Room handler
-    resources "/rooms", RoomController
+    resources "/rooms", RoomController, except: [:index] 
     
     # Main page
     get "/main", RoomUserController, :get_rooms_user_is_not_joined_to
     post "/rooms_users/create/:room_id", RoomUserController, :create_room_user
     get "/rooms_users/joined", RoomUserController, :get_rooms_user_is_joined_to
     patch "/rooms_users/leave/:room_id", RoomUserController, :leave_room
-
-    # get "/holache", RoomUserController, :what
 
     # Default path if none of the above was invoked
     get "/error", ErrorController, :index
@@ -53,11 +52,11 @@ defmodule StreamingRoomsWeb.Router do
     resources "/users", UserController, except: [:new, :edit]
     # resources "/rooms_users", RoomUserController, except: [:new, :edit]
 
-    patch "/rooms_users/:room_id/:user_id/soundcloud", RoomUserController, :increment_soundcloud_streams
-    patch "/rooms_users/:room_id/:user_id/youtube", RoomUserController, :increment_youtube_streams
-    get "/rooms_users/:room_id/soundcloud", RoomUserController, :get_soundcloud_streams_in_room
-    get "/rooms_users/rooms/:room_id/youtube", RoomUserController, :get_youtube_streams_in_room
-    get "/rooms_users/rooms/:room_id/ranking", RoomUserController, :get_users_that_stream_the_most
+    patch "/rooms_users/:room_id/soundcloud", RoomUserController, :increment_soundcloud_streams
+    patch "/rooms_users/:room_id/youtube", RoomUserController, :increment_youtube_streams
+    # get "/rooms_users/:room_id/soundcloud", RoomUserController, :get_soundcloud_streams_in_room
+    # get "/rooms_users/rooms/:room_id/youtube", RoomUserController, :get_youtube_streams_in_room
+    # get "/rooms_users/rooms/:room_id/ranking", RoomUserController, :get_users_that_stream_the_most
     get "/rooms_users/rooms/:room_id/in_room", RoomUserController, :get_users_currently_in_room
 
 

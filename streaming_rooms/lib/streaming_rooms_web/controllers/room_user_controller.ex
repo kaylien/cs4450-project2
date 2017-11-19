@@ -66,8 +66,8 @@ defmodule StreamingRoomsWeb.RoomUserController do
   ###############################################
 
 
-  def increment_soundcloud_streams(conn, %{"room_id" => room_id, "user_id" => user_id}) do
-        result_db = Rooms.increment_soundcloud_streams(room_id, user_id)
+  def increment_soundcloud_streams(conn, %{"room_id" => room_id}) do
+        result_db = Rooms.increment_soundcloud_streams(room_id, conn.assigns.current_user.id)
         try do
             if elem(result_db, 0) == 0 do
                send_error_message(conn, 404, "Incorrect user and/or room")
@@ -81,8 +81,8 @@ defmodule StreamingRoomsWeb.RoomUserController do
   end
 
 
-  def increment_youtube_streams(conn, %{"room_id" => room_id, "user_id" => user_id}) do
-        result_db = Rooms.increment_youtube_streams(room_id, user_id)
+  def increment_youtube_streams(conn, %{"room_id" => room_id}) do
+        result_db = Rooms.increment_youtube_streams(room_id, conn.assigns.current_user.id)
         try do
             if elem(result_db, 0) == 0 do
                send_error_message(conn, 404, "Incorrect user and/or room")

@@ -4,7 +4,8 @@ export var SoundcloudModule = {
         var widget = SC.Widget("soundcloud_player");
 
         var songUrl = document.querySelector("#soundcloud_id").getAttribute("data-url");
-        var roomId = document.querySelector("#youtube_id").getAttribute("room_id");
+        var roomId = document.querySelector("#room_id").getAttribute("data-url");
+        var url = "/api/rooms_users/" + roomId + "/soundcloud";
 
         // Set listeners
         widget.bind(SC.Widget.Events.READY, onPlayerReady);
@@ -49,7 +50,20 @@ export var SoundcloudModule = {
                     timeElapsedOfSoundcloudTimer = 0;
                     if (endedAfterEnoughTime){
                         console.log("Stream counts!");
-                        
+                        $.ajax({
+                            url: url,
+                            type: 'PATCH',
+                            success: function(res) {
+                                var responseMessage = JSON.parse(res);
+                                if (responseMessage["result"] == "ok"){
+                                    // Do something
+                                }
+                            },
+                            error: function(xhr, ajaxOptions, thrownError) {
+                                var responseMessage = JSON.parse(xhr.responseText);
+                                console.log("COULD NOT INCREMENT: " + responseMessage["message"]);
+                            }
+                        });
                     }else{
                         console.log("Stream doesn't count!");
                     }

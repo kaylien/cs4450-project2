@@ -1,9 +1,23 @@
 <h2><%= @room.name %></h2>
+<!--
+<div id="user_id" data-url="<%= @current_user.id %>"></div> -->
 
-<div id="user_id" data-url="<%= 1 %>"></div>
 <div id="room_id" data-url="<%= @room.id %>"></div>
 <div id="youtube_id" data-url="<%= @room.youtube_link %>"></div>
 <div id="soundcloud_id" data-url="<%= @room.soundcloud_link %>"></div>
+
+<div>
+    <% alias StreamingRooms.Rooms %>
+    Youtube streams: <%= Rooms.get_youtube_streams_in_room(@room.id) %>
+    Soundcloud streams: <%= Rooms.get_soundcloud_streams_in_room(@room.id) %>
+
+    <%=  response = Rooms.get_users_that_stream_the_most(@room.id) 
+        if response != [] do %>
+            Users that stream the most: 
+            <%= Rooms.get_users_that_stream_the_most(@room.id) 
+                |> Enum.map(fn {k, v} -> k end) %>
+    <%= end %>
+</div>
 
 <!-- Here's going to be the video -->
 <div id="youtube_player"></div>
@@ -27,8 +41,7 @@
 
     var videoId = document.getElementById("youtube_id").getAttribute("data-url");
     var roomId = document.getElementById("room_id").getAttribute("data-url");
-    var userId = document.getElementById("user_id").getAttribute("data-url");
-    var url = "/api/rooms_users/" + roomId + "/" + userId + "/youtube";
+    var url = "/api/rooms_users/" + roomId + "/youtube";
 
     // This function creates an <iframe> (and YouTube player) after the API code downloads.
     var youtubePlayer;
@@ -60,11 +73,10 @@
     function onPlayerStateChange(event) {
         state = event.data
         if (state == YT.PlayerState.ENDED){
-          clearTimeout(timeoutVariable);
+            clearTimeout(timeoutVariable);
             timeoutVariable = undefined;
             totalYoutubeTime = 0;
             timeElapsedOfYoutubeTimer = 0;
-            endedAfterEnoughTime = true;
             if (endedAfterEnoughTime){
                 console.log("Stream counts!");
                 $.ajax({
@@ -73,7 +85,7 @@
                     success: function(res) {
                         var responseMessage = JSON.parse(res);
                         if (responseMessage["result"] == "ok"){
-                            console.log("INCREMENTED SUCCESSFULLY!");
+
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
@@ -119,6 +131,4 @@
           <%= @room.youtube_link %>
         </li>
     </ul>
-    <span><%= link "Edit", to: room_path(@conn, :edit, @room) %></span>
-    <span><%= link "Back", to: room_path(@conn, :index) %></span>
 -->
