@@ -15,8 +15,8 @@
         if response != [] do %>
             Users that stream the most: 
             <%= Rooms.get_users_that_stream_the_most(@room.id) 
-                |> Enum.map(fn {k, v} -> k end) %>
-    <%= end %>
+                |> Enum.map(fn {k, _v} -> k end) %>
+    <% end %>
 </div>
 
 <!-- Here's going to be the video -->
@@ -25,8 +25,6 @@
 <iframe id="soundcloud_player" width="400px" height="166px" scrolling="no" frameborder="no"
     src="https://w.soundcloud.com/player/?url=<%= @room.soundcloud_link %>">
 </iframe>
-
-<span><%= link "Main page", to: room_user_path(@conn, :get_rooms_user_is_not_joined_to) %></span>
 
 <!-- YOUTUBE SCRIPT -->
 <script type="text/javascript">

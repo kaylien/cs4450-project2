@@ -151,11 +151,11 @@ defmodule StreamingRoomsWeb.RoomUserController do
       result = Rooms.join_room_once_again(conn.assigns.current_user.id, room_id)
       if result == nil || elem(result, 0) == 0 do
           case Rooms.create_room_user(%{:room_id => room_id, :user_id => conn.assigns.current_user.id}) do
-            {:ok, result} -> 
+            {:ok, _result} -> 
                 conn
                 |> put_flash(:info, "You are now joined to the room!")
                 |> redirect(to: room_path(conn, :show, room_id))
-            {:error, error} ->
+            {:error, _error} ->
                 conn
                 |> put_flash(:error, "You couldn't join room. Try again!")
                 |> redirect(to: room_user_path(conn, :get_rooms_user_is_not_joined_to))

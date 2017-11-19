@@ -18,11 +18,11 @@ defmodule StreamingRoomsWeb.RoomController do
     case Rooms.create_room(room_params) do
       {:ok, room} ->
           case Rooms.create_room_user(%{:room_id => room.id, :user_id => conn.assigns.current_user.id}) do
-              {:ok, result} -> 
+              {:ok, _result} -> 
                   conn
                   |> put_flash(:info, "Room created successfully!")
                   |> redirect(to: room_path(conn, :show, room.id))
-              {:error, error} ->
+              {:error, _error} ->
                   Rooms.delete_room(room)
                   conn
                   |> put_flash(:error, "Room couldn't be created!")
