@@ -1,0 +1,22 @@
+<h2>Listing Rooms</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Id</th>
+        </tr>
+    </thead>
+    <tbody>
+        <%= for room <- @rooms do %>
+            <tr>
+          	    <td><%= room.name %></td>
+          	    <td><%= room.id %></td>
+          		  <td><span><%= button "Join", to: room_user_path(@conn, :create_room_user, room.id, @current_user.id), class: "btn btn-default btn-xs" %>    </span></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<span><%= link "Create room", to: room_path(@conn, :new) %></span>
+<span><%= link "Rooms that I'm joined to", to: room_user_path(@conn, :get_rooms_user_is_joined_to) %></span>
