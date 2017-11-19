@@ -151,17 +151,32 @@ defmodule StreamingRoomsWeb.RoomUserController do
       case Rooms.create_room_user(%{:room_id => room_id, :user_id => user_id}) do
         {:ok, result} -> 
             conn
-            |> put_flash(:info, "User is now joined to the room!")
+            |> put_flash(:info, "You are now joined to the room!")
             |> redirect(to: room_path(conn, :show, room_id))
         {:error, error} ->
             conn
-            |> put_flash(:error, "User couldn't join room. Try again!")
+            |> put_flash(:error, "You couldn't join room. Try again!")
             |> redirect(to: room_user_path(conn, :get_rooms_user_is_not_joined_to))
       end
   end
 
-  def get_rooms_user_is_joined_to(conn, %{"user_id" => user_id}) do
-      result = Rooms.get_rooms_user_is_joined_to(user_id)
+
+  def leave_room(conn, %{"room_id" => room_id}) do
+      result_db = Rooms.leave_room(conn.assigns.current_user.id, room_id)
+      if result_db == nil || elem(result_db, 0) == 0 do
+          conn
+          |> put_flash(:info, "You couldn't leave the room!")
+          |> redirect(to: room_user_path(conn, :get_rooms_user_is_joined_to))
+      else
+          conn
+          |> put_flash(:info, "You left to the room!")
+          |> redirect(to: room_user_path(conn, :get_rooms_user_is_joined_to))
+      end
+  end
+
+
+  def get_rooms_user_is_joined_to(conn, _params) do
+      result = Rooms.get_rooms_user_is_joined_to(conn.assigns.current_user.id)
       if result == nil do
             send_error_message(conn, 404, "The user supplied is invalid")
       else
@@ -176,6 +191,7 @@ defmodule StreamingRoomsWeb.RoomUserController do
           #end
         end
   end
+
 
   def get_rooms_user_is_not_joined_to(conn, _params) do
       result = Rooms.get_rooms_user_is_not_joined_to(conn.assigns.current_user.id)

@@ -14,7 +14,7 @@ defmodule StreamingRoomsWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug :fetch_user
+    # plug :fetch_user
     #plug :redirect_depending_on_status
   end
 
@@ -33,13 +33,13 @@ defmodule StreamingRoomsWeb.Router do
     # Room handler
     resources "/rooms", RoomController
     
-    get "/rooms_users/users/:user_id/joined", RoomUserController, :get_rooms_user_is_joined_to
-
     # Main page
     get "/main", RoomUserController, :get_rooms_user_is_not_joined_to
     post "/rooms_users/:room_id/:user_id", RoomUserController, :create_room_user
+    get "/rooms_users/joined", RoomUserController, :get_rooms_user_is_joined_to
+    patch "/rooms_users/:room_id/leave", RoomUserController, :leave_room
 
-  #  get "/holache", RoomUserController, :what
+    # get "/holache", RoomUserController, :what
 
     # Default path if none of the above was invoked
     get "/error", ErrorController, :index
@@ -59,6 +59,7 @@ defmodule StreamingRoomsWeb.Router do
     get "/rooms_users/rooms/:room_id/youtube", RoomUserController, :get_youtube_streams_in_room
     get "/rooms_users/rooms/:room_id/ranking", RoomUserController, :get_users_that_stream_the_most
     get "/rooms_users/rooms/:room_id/in_room", RoomUserController, :get_users_currently_in_room
+
 
   end
 
