@@ -49,7 +49,7 @@ export var SoundcloudModule = {
                     totalSoundcloudTime = 0;
                     timeElapsedOfSoundcloudTimer = 0;
                     if (endedAfterEnoughTime){
-                        console.log("Stream counts!");
+                        console.log("Soundcloud stream counts!");
                         $.ajax({
                             url: url,
                             type: 'PATCH',

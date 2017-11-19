@@ -168,6 +168,21 @@ defmodule StreamingRoomsWeb.RoomUserController do
   end
 
 
+  def update_user_in_room(conn, %{"room_id" => room_id, "in_room" => in_room}) do
+        result_db = Rooms.update_user_in_room(conn.assigns.current_user.id, room_id, in_room)
+        try do
+            if elem(result_db, 0) == 0 do
+               send_error_message(conn, 404, "Incorrect user and/or room")
+            else
+                send_resp(conn, 200, Poison.encode!(%{:result => :ok}))
+            end
+        rescue 
+           _e in Poison.EncodeError ->
+              internal_error_message(conn)
+        end
+  end
+
+
   def leave_room(conn, %{"room_id" => room_id}) do
       result_db = Rooms.leave_room(conn.assigns.current_user.id, room_id)
       if result_db == nil || elem(result_db, 0) == 0 do

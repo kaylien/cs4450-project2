@@ -2,8 +2,8 @@ defmodule StreamingRoomsWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", StreamingRoomsWeb.RoomChannel
-  channel "updates:lobby", StreamingRoomsWeb.UpdatesChannel
+  channel "room:*", StreamingRoomsWeb.UpdatesChannel
+  # channel "updates:lobby", StreamingRoomsWeb.UpdatesChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

@@ -53,74 +53,54 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 
 
 function onRecievePost(data) {
+    let listOfUsersDiv = document.getElementById("list_of_users_connected")
+    
+    if (listOfUsersDiv != undefined){
 
-	//if (data.id === undefined || data.post === undefined || data.email === undefined) {
-	//	return;
-	//}
-	//console.log(data)
+       	var username = data.username
+        var value = listOfUsersDiv.innerHTML;
+        var listOfUsernames = value.split(", ");
+        var alreadyInList = false;
+        
 
-   let string = `<tr>
-      <td>${data.post}</td>
-      <td>${data.userID}</td>
-      <td class="text-right">
-        <span><a class="btn btn-default btn-xs" href="/posts/${data.id}">Show</a></span>
-        <span><a class="btn btn-default btn-xs" href="/posts/${data.id}/edit">Edit</a></span>
-        <span><a class="btn btn-danger btn-xs" data-confirm="Are you sure?" data-csrf="DXRzFQonCQ0xNxkvbRA0UTcKEnQjAAAAcMDDblQxGVZg5AugbCWCGw==" data-method="delete" data-to="/posts/7" href="#" rel="nofollow">Delete</a></span>
-      </td>
-    </tr>`
+        for(var i=0; i<listOfUsernames.length; i++) {
+            if (listOfUsernames[i] == username){
+                alreadyInList = true;
+                break;
+            }
+        }
 
-    //let tbody = $('body > div > div:nth-child(2) > div > table > tbody')
-    let tbody = $('body > div:nth-child(3) > div > table > tbody')
+        if (!alreadyInList){
+        	if (listOfUsernames[0] == ""){
+            	listOfUsersDiv.append(username);
+        	}else{
+            	listOfUsersDiv.append(", " + username);
+        	}
+        }
 
-    if (!tbody) {
-    	return;
     }
 
-    tbody.prepend($(string))
-
 }
 
-socket.connect()
+if (document.getElementById("list_of_users_connected") != undefined){
 
-// Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("updates:lobby", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+	socket.connect();
+
+	// Now that you are connected, you can join channels with a topic:
+	let channel = socket.channel("room:" + roomId, {})
+	channel.join()
+	    .receive("ok", resp => { 
+	        console.log("Joined successfully", resp);
+	        channel.push("user_just_joined_room", {
+	            username: username
+	        });
+	    })
+	    .receive("error", resp => { console.log("Unable to join", resp) })
 
 
-channel.on("ping", onRecievePost);
+	channel.on("user_just_joined_room", onRecievePost);
 
-
-console.log('starting')
-
-
-
-function onPageLoad() {
-		
-	if (location.pathname.startsWith('/rooms/') && location.hash == '#sendSocket') {
-
-		let postId = location.pathname.split('/')[2]
-		let post = $('body > div:nth-child(3) > div > ul > li:nth-child(1)').text().slice(11)
-		let email = window.currUserEmail
-		let userID = window.currUserId
-
-		console.log('Sending off a post:', email,post, postId, userID)
-
-		channel.push("ping", {
-			id: postId,
-			post: post,
-			email: email,
-			userID: userID
-		});
-
-		window.location.hash = ''
-
-	}
 }
-
-$(onPageLoad)
-
 
 
 export default socket

@@ -5,6 +5,7 @@
 <div id="room_id" data-url="<%= @room.id %>"></div>
 <div id="youtube_id" data-url="<%= @room.youtube_link %>"></div>
 <div id="soundcloud_id" data-url="<%= @room.soundcloud_link %>"></div>
+<div id="username" data-url="<%= @current_user.username %>"></div>
 
 <div>
     <% alias StreamingRooms.Rooms %>
@@ -26,6 +27,11 @@
     src="https://w.soundcloud.com/player/?url=<%= @room.soundcloud_link %>">
 </iframe>
 
+
+    <div>
+        List of users connected: <div id="list_of_users_connected"></div>
+    </div>
+
 <!-- YOUTUBE SCRIPT -->
 <script type="text/javascript">
 
@@ -37,9 +43,10 @@
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+    var username = document.getElementById("username").getAttribute("data-url");
     var videoId = document.getElementById("youtube_id").getAttribute("data-url");
     var roomId = document.getElementById("room_id").getAttribute("data-url");
-    var url = "/api/rooms_users/" + roomId + "/youtube";
+    var videoUrl = "/api/rooms_users/" + roomId + "/youtube";
 
     // This function creates an <iframe> (and YouTube player) after the API code downloads.
     var youtubePlayer;
@@ -76,9 +83,9 @@
             totalYoutubeTime = 0;
             timeElapsedOfYoutubeTimer = 0;
             if (endedAfterEnoughTime){
-                console.log("Stream counts!");
+                console.log("Youtube stream counts!");
                 $.ajax({
-                    url: url,
+                    url: videoUrl,
                     type: 'PATCH',
                     success: function(res) {
                         var responseMessage = JSON.parse(res);
@@ -110,6 +117,24 @@
                 timeoutVariable = setTimeout(function(){ endedAfterEnoughTime = true; }, youtubeDuration - totalYoutubeTime);
             }
         }
+    }
+
+    function invokeInRoomFunction(value){
+        // Set attribute in_room to true
+        $.ajax({
+            url: "/api/rooms_users/" + roomId + "/in_room",
+            type: 'PATCH',
+            dataType: 'json',
+            data: JSON.parse('{"in_room": ' + value + '}'),
+            success: function(res) {
+                console.log(res.result);
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                console.log("ERROR " + xhr);
+                var responseMessage = JSON.parse(xhr.responseText);
+                console.log("COULD NOT UPDATE VALUE: " + responseMessage["message"]);
+            }
+        });
     }
 
 </script>

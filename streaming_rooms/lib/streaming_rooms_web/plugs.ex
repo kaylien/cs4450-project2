@@ -3,7 +3,6 @@ defmodule StreamingRoomsWeb.Plugs do
     alias StreamingRoomsWeb.Router.Helpers, as: Routes
 
     def fetch_user(conn, _opts) do
-        IO.inspect conn
         user_id = get_session(conn, :user_id)
         if user_id do
             user = StreamingRooms.Accounts.get_user!(user_id)

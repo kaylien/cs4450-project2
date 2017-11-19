@@ -309,6 +309,17 @@ defmodule StreamingRooms.Rooms do
   ##             USER-ROOM FUNCTIONS           ##
   ###############################################
 
+  def update_user_in_room(user_id, room_id, in_room) do
+      try do
+          from(ru in RoomUser, where: ru.room_id == ^room_id 
+                and ru.user_id == ^user_id, update: [set: [in_room: ^in_room]])
+          |> Repo.update_all([])
+      rescue 
+        _e in Ecto.Query.CastError ->
+            {0, nil} # Return empty list if room_id or user_id are not integers
+      end
+  end
+
   def join_room_once_again(user_id, room_id) do
       try do
           from(ru in RoomUser, where: ru.room_id == ^room_id 

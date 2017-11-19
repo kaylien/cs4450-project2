@@ -28,6 +28,7 @@ if (document.getElementById("soundcloud_player") != undefined){
 
 	document.getElementsByTagName("body")[0].onload = function(){
 		SoundcloudModule.runSoundcloud();
+		invokeInRoomFunction(true);
 	}
 
 }

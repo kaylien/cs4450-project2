@@ -54,12 +54,9 @@ defmodule StreamingRoomsWeb.Router do
 
     patch "/rooms_users/:room_id/soundcloud", RoomUserController, :increment_soundcloud_streams
     patch "/rooms_users/:room_id/youtube", RoomUserController, :increment_youtube_streams
-    # get "/rooms_users/:room_id/soundcloud", RoomUserController, :get_soundcloud_streams_in_room
-    # get "/rooms_users/rooms/:room_id/youtube", RoomUserController, :get_youtube_streams_in_room
-    # get "/rooms_users/rooms/:room_id/ranking", RoomUserController, :get_users_that_stream_the_most
+
+    patch "/rooms_users/:room_id/in_room", RoomUserController, :update_user_in_room
     get "/rooms_users/rooms/:room_id/in_room", RoomUserController, :get_users_currently_in_room
-
-
   end
 
 end
