@@ -22,6 +22,7 @@ import "phoenix_html"
 
 import SC from './soundcloud_script'
 import SoundcloudModule from './soundcloud_handler'
+import socket from "./socket"
 
 if (document.getElementById("soundcloud_player") != undefined){
 
