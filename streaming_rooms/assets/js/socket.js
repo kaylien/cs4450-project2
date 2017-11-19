@@ -51,12 +51,76 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 // Finally, pass the token on connect as below. Or remove it
 // from connect if you don't care about authentication.
 
+
+function onRecievePost(data) {
+
+	//if (data.id === undefined || data.post === undefined || data.email === undefined) {
+	//	return;
+	//}
+	//console.log(data)
+
+   let string = `<tr>
+      <td>${data.post}</td>
+      <td>${data.userID}</td>
+      <td class="text-right">
+        <span><a class="btn btn-default btn-xs" href="/posts/${data.id}">Show</a></span>
+        <span><a class="btn btn-default btn-xs" href="/posts/${data.id}/edit">Edit</a></span>
+        <span><a class="btn btn-danger btn-xs" data-confirm="Are you sure?" data-csrf="DXRzFQonCQ0xNxkvbRA0UTcKEnQjAAAAcMDDblQxGVZg5AugbCWCGw==" data-method="delete" data-to="/posts/7" href="#" rel="nofollow">Delete</a></span>
+      </td>
+    </tr>`
+
+    //let tbody = $('body > div > div:nth-child(2) > div > table > tbody')
+    let tbody = $('body > div:nth-child(3) > div > table > tbody')
+
+    if (!tbody) {
+    	return;
+    }
+
+    tbody.prepend($(string))
+
+}
+
 socket.connect()
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("topic:subtopic", {})
+let channel = socket.channel("updates:lobby", {})
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
+
+
+channel.on("ping", onRecievePost);
+
+
+console.log('starting')
+
+
+
+function onPageLoad() {
+		
+	if (location.pathname.startsWith('/rooms/') && location.hash == '#sendSocket') {
+
+		let postId = location.pathname.split('/')[2]
+		let post = $('body > div:nth-child(3) > div > ul > li:nth-child(1)').text().slice(11)
+		let email = window.currUserEmail
+		let userID = window.currUserId
+
+		console.log('Sending off a post:', email,post, postId, userID)
+
+		channel.push("ping", {
+			id: postId,
+			post: post,
+			email: email,
+			userID: userID
+		});
+
+		window.location.hash = ''
+
+	}
+}
+
+$(onPageLoad)
+
+
 
 export default socket
