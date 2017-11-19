@@ -12,7 +12,7 @@
     <tbody>
         <%= for room <- @rooms do %>
             <tr>
-          	    <td><%= room.name %></td>
+          	    <td><%= link room.name, to: room_path(@conn, :show, room.id) %></td>
           	    <td><%= room.id %></td>
                 <td><span><%= link "Leave", to: room_user_path(@conn, :leave_room, room.id), method: :patch, class: "btn btn-danger btn-xs" %></span></td>
           	<!--	  <td><span><%= button "Leave", to: room_user_path(@conn, :leave_room, room.id), class: "btn btn-default btn-xs" %></span></td> -->

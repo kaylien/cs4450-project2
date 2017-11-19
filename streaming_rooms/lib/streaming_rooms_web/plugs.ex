@@ -18,13 +18,15 @@ defmodule StreamingRoomsWeb.Plugs do
         if (request_path == "/" || request_path == "/hello") do
            conn 
         else
-            if ((request_path == "/sessions" || request_path == "/sessions/twitter") && user_id) do
+            if ((request_path == "/sessions" || request_path == "/sessions/twitter") && conn.method == "GET" && user_id) do
                 conn
-                |> Phoenix.Controller.redirect(to: Routes.hello_path(conn, :index))
+                |> Phoenix.Controller.redirect(to: Routes.room_user_path(conn, :get_rooms_user_is_not_joined_to))
+                |> halt()
             else
                 if (request_path != "/sessions" && request_path != "/sessions/twitter" && !user_id) do
                     conn
-                    |> Phoenix.Controller.redirect(to: Routes.page_path(conn, :index))   
+                    |> Phoenix.Controller.redirect(to: Routes.page_path(conn, :index))
+                    |> halt()
                 else
                     conn
                 end

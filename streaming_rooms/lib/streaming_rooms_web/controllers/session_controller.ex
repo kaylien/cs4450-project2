@@ -5,19 +5,19 @@ defmodule StreamingRoomsWeb.SessionController do
 
     # Log in to account 
     def login(conn, _params) do
-        if get_session(conn, :user_id) != nil do
-            redirect conn, to: hello_path(conn, :show, "Already logged in!!!")
-        else
+        # if get_session(conn, :user_id) != nil do
+        #     redirect conn, to: hello_path(conn, :show, "Already logged in!!!")
+        # else
           	response = TwitterModule.sign_in
           	redirect conn, external: response
-        end
+        # end
     end
 
     # Gets tokens from Twitter
     def get_tokens(conn, params) do
-        if get_session(conn, :user_id) != nil do
-            redirect conn, to: hello_path(conn, :show, "Already logged in!!!")
-        else
+        # if get_session(conn, :user_id) != nil do
+        #     redirect conn, to: room_user_path(conn, :show, "Already logged in!!!")
+        # else
           	oauth_token = params["oauth_token"]
           	oauth_verifier = params["oauth_verifier"]
           	result = TwitterModule.get_access_token(oauth_token, oauth_verifier)
@@ -26,7 +26,7 @@ defmodule StreamingRoomsWeb.SessionController do
           	else # Couldn't get access token
           		  redirect conn, to: error_path(conn, :index)
           	end
-        end
+        # end
     end
 
     # Gets information from Twitter
@@ -52,7 +52,7 @@ defmodule StreamingRoomsWeb.SessionController do
                 # Put information into session
                 conn 
                 |> put_session(:user_id, user.id)
-                |> redirect(to: hello_path(conn, :show, user.username))
+                |> redirect(to: room_user_path(conn, :get_rooms_user_is_not_joined_to))
 
             rescue _e in Ecto.NoResultsError -> 
                 user = %Accounts.User{:twitter_id => credentials.twitter_id, 
@@ -63,7 +63,7 @@ defmodule StreamingRoomsWeb.SessionController do
                     {:ok, result} = Accounts.insert_user(user)  # Will throw ContraintError if can't insert user
                     conn
                     |> put_session(:user_id, result.id)
-                    |> redirect(to: hello_path(conn, :show, result.username))
+                    |> redirect(to: room_user_path(conn, :get_rooms_user_is_not_joined_to))
                 rescue
                     _e in Ecto.ConstraintError ->
                         IO.puts "CONSTRAINT ERROR!"

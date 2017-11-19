@@ -12,6 +12,8 @@
     src="https://w.soundcloud.com/player/?url=<%= @room.soundcloud_link %>">
 </iframe>
 
+<span><%= link "Main page", to: room_user_path(@conn, :get_rooms_user_is_not_joined_to) %></span>
+
 <!-- YOUTUBE SCRIPT -->
 <script type="text/javascript">
 

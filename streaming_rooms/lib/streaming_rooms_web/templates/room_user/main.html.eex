@@ -12,7 +12,7 @@
             <tr>
           	    <td><%= room.name %></td>
           	    <td><%= room.id %></td>
-          		  <td><span><%= button "Join", to: room_user_path(@conn, :create_room_user, room.id, @current_user.id), class: "btn btn-default btn-xs" %>    </span></td>
+          		  <td><span><%= button "Join", to: room_user_path(@conn, :create_room_user, room.id), class: "btn btn-default btn-xs" %>    </span></td>
             </tr>
         <% end %>
     </tbody>

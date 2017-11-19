@@ -147,16 +147,23 @@ defmodule StreamingRoomsWeb.RoomUserController do
   ##             USER-ROOM FUNCTIONS           ##
   ###############################################
 
-  def create_room_user(conn, %{"room_id" => room_id, "user_id" => user_id}) do
-      case Rooms.create_room_user(%{:room_id => room_id, :user_id => user_id}) do
-        {:ok, result} -> 
-            conn
-            |> put_flash(:info, "You are now joined to the room!")
-            |> redirect(to: room_path(conn, :show, room_id))
-        {:error, error} ->
-            conn
-            |> put_flash(:error, "You couldn't join room. Try again!")
-            |> redirect(to: room_user_path(conn, :get_rooms_user_is_not_joined_to))
+  def create_room_user(conn, %{"room_id" => room_id}) do
+      result = Rooms.join_room_once_again(conn.assigns.current_user.id, room_id)
+      if result == nil || elem(result, 0) == 0 do
+          case Rooms.create_room_user(%{:room_id => room_id, :user_id => conn.assigns.current_user.id}) do
+            {:ok, result} -> 
+                conn
+                |> put_flash(:info, "You are now joined to the room!")
+                |> redirect(to: room_path(conn, :show, room_id))
+            {:error, error} ->
+                conn
+                |> put_flash(:error, "You couldn't join room. Try again!")
+                |> redirect(to: room_user_path(conn, :get_rooms_user_is_not_joined_to))
+          end
+      else
+          conn
+          |> put_flash(:info, "You are now joined to the room!")
+          |> redirect(to: room_path(conn, :show, room_id))
       end
   end
 
