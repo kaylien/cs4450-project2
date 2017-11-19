@@ -15,10 +15,10 @@ defmodule StreamingRoomsWeb.Plugs do
     def redirect_depending_on_status(conn, _opts) do
         user_id = get_session(conn, :user_id)
         request_path = conn.request_path
-        if (request_path == "/" || request_path == "/hello") do
-           conn 
-        else
-            if ((request_path == "/sessions" || request_path == "/sessions/twitter") && conn.method == "GET" && user_id) do
+        # if (request_path == "/" || request_path == "/hello") do
+        #    conn 
+        # else
+            if ((request_path == "/sessions" || request_path == "/sessions/twitter" || request_path == "/") && conn.method == "GET" && user_id) do
                 conn
                 |> Phoenix.Controller.redirect(to: Routes.room_user_path(conn, :get_rooms_user_is_not_joined_to))
                 |> halt()
@@ -31,7 +31,7 @@ defmodule StreamingRoomsWeb.Plugs do
                     conn
                 end
             end
-        end
+        # end
     end
 
 end
