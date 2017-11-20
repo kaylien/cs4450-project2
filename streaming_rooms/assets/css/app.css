@@ -245,3 +245,11 @@ height: 100%;
 @media all and (max-width: 500px) {
 .vid-info .acronym { display: none; }
 }
+
+.header-credentials{
+    position: absolute;
+    right: 0px;
+    width: 300px;
+    padding: 10px;
+    margin-top: 20px;
+}

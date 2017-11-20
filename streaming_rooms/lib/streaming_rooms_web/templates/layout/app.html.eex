@@ -16,20 +16,20 @@
     <div class="container">
 
       <%= if @current_user do %>
-        <header class="header">
+        <header class="header" style="margin-top: 20px;">
           <nav role="navigation">
-              <span class="text-light">
+              <%= link "", to: room_user_path(@conn, :get_rooms_user_is_not_joined_to), class: "logo" %>
+              <span class="text-light header-credentials">
                 <%= @current_user.username %> | <%= link("logout", to: session_path(@conn, :logout), method: :delete) %>
               </span>
 
           </nav>
-          <%= link "", to: room_user_path(@conn, :get_rooms_user_is_not_joined_to), class: "logo" %>
         <!--  <span class="logo"></span>  -->
         </header>
       <% end %>
 
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <p style="width:40%; margin: 0 auto; text-align: center;" class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <p style="width:40%; margin: 0 auto; text-align: center;" class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
       <main role="main">
         <%= render @view_module, @view_template, assigns %>

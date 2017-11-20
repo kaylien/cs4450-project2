@@ -5,11 +5,16 @@ html{
     padding: 0;
 }
 body{
-  background: -webkit-linear-gradient(left, #25c481, #25b7c4);
-  background: linear-gradient(to right, #25c481, #25b7c4);
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
+    background: -webkit-linear-gradient(left, #25c481, #25b7c4);
+    background: linear-gradient(to right, #25c481, #25b7c4);
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
     padding: 0;
+}
+
+table{
+  max-width: 100%;
+  width: 100%;
 }
 
 .container{

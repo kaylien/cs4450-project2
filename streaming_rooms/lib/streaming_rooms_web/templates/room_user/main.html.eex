@@ -1,54 +1,50 @@
-
+<!--
 <head>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/joined.css") %>">
 </head>
-
+-->
 <style type="text/css">
     .header-title{
-  font-size: 60px;
-  color: #ffffff;
-  text-transform: uppercase;
-  font-weight: 300;
-  text-align: center;
-  margin-bottom: 15px;
-}
-html, body {
-    margin: 0;
-    padding: 0;
-}
+      font-size: 60px;
+      color: #ffffff;
+      text-transform: uppercase;
+      font-weight: 300;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    html, body {
+        margin: 0;
+        padding: 0;
+    }
 </style>
 
 <div class="tbl-header container">
-<table cellpadding="0" cellspacing="0" border="0">
-    <thead>
-        <tr>
-            <th> Rooms</th>
-            <!-- <th>Id</th>-->
+    <table cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th> Rooms</th>
+                <!-- <th>Id</th>-->
 
-        </tr>
-    </thead>
+            </tr>
+        </thead>
     </table>
-  </div>
-<div class="tbl-content container">
+</div>
 
+<div class="tbl-content container">
     <table cellpadding="0" cellspacing="0" border="0">
       <tbody>
         <%= for room <- @rooms do %>
 
             <tr>
                 <td><%= room.name %></td>
-                <!--<td><%= room.id %></td>-->
-                <td><span><%= button "Join", to: room_user_path(@conn, :create_room_user, room.id), class: "btn btn-default btn-xlarge" %>    </span></td>
-            <!--      <td><span><%= button "Leave", to: room_user_path(@conn, :leave_room, room.id), class: "btn btn-default btn-xs" %></span></td> -->
+                <td align="right"><span><%= button "Join", to: room_user_path(@conn, :create_room_user, room.id), class: "btn btn-default btn-xlarge" %>    </span></td>
             </tr>
         <% end %>
     </tbody>
 </table>
 </div>
-<div style="width: 50%; margin: 0 auto; margin-top: 30px; margin-bottom: 30px;">
-    <span style="padding-right: 10px;"><%= link "Back", to: room_user_path(@conn, :get_rooms_user_is_not_joined_to), class: "btn btn-default btn-leavepage" %></span> 
+<div style="width: 40%; margin: 0 auto; margin-top: 30px; margin-bottom: 30px;">
+    <span style="padding-right: 10px;"><%= link "Joined rooms", to: room_user_path(@conn, :get_rooms_user_is_joined_to), class: "btn btn-default btn-leavepage" %></span>
 
-    <span style="padding-right: 10px;"><%= link "Joined Rooms", to: room_user_path(@conn, :get_rooms_user_is_joined_to), class: "btn btn-default btn-leavepage" %></span>
-
-    <span style="padding-right: 10px;"><%= link "Create room", to: room_path(@conn, :new) , class: "btn btn-default btn-leavepage" %></span>
+    <span><%= link "Create room", to: room_path(@conn, :new) , class: "btn btn-default btn-leavepage" %></span>
 </div>

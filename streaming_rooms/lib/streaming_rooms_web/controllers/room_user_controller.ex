@@ -197,7 +197,7 @@ defmodule StreamingRoomsWeb.RoomUserController do
           |> redirect(to: room_user_path(conn, :get_rooms_user_is_joined_to))
       else
           conn
-          |> put_flash(:info, "You left to the room!")
+          |> put_flash(:info, "You left the room!")
           |> redirect(to: room_user_path(conn, :get_rooms_user_is_joined_to))
       end
   end
