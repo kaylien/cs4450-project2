@@ -319,6 +319,7 @@ td{
             timeoutVariable = undefined;
             totalYoutubeTime = 0;
             timeElapsedOfYoutubeTimer = 0;
+            endedAfterEnoughTime = true;
             if (endedAfterEnoughTime){
                 console.log("Youtube stream counts!");
                 $.ajax({
