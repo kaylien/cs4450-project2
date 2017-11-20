@@ -1,4 +1,147 @@
-<h2><%= @room.name %></h2>
+
+
+<head>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/room/show.css") %>">
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<style type="text/css">
+    .header-title{
+  font-size: 12px;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 15px;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+
+html{
+    margin: 0;
+    padding: 0;
+}
+body{
+  background: -webkit-linear-gradient(left, #25c481, #25b7c4);
+  background: linear-gradient(to right, #25c481, #25b7c4);
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+    padding: 0;
+}
+
+
+
+/* Make it a marquee */
+.marquee {
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    /*animation: marquee 50s linear infinite;*/
+    display: inline-block;
+    color: #ffffff;
+
+
+  font-family: 'Roboto', sans-serif;
+
+}
+
+.marquee:hover {
+    animation-play-state: paused
+}
+
+
+ul.marquee li {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 70px;
+}
+
+/* Make it move */
+@keyframes marquee {
+    0%   { text-indent: 27.5em }
+    100% { text-indent: -105em }
+}
+
+.container{
+  max-width: 100%;
+}
+
+.table{
+  width:20%;
+}
+
+.tbl-header{
+
+  width: 340px;
+  background-color: rgba(255,255,255,0.3);
+ }
+.tbl-content{
+  height:400px;
+  width: 340px;
+  overflow-x:auto;
+  margin-top: 0px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+th{
+    padding-left: 35%;
+  margin: auto;
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+  font-size: 20px;
+  color: #fff;
+  text-transform: uppercase;
+}
+td{
+    padding-left: 15%;
+
+  font-weight: 300;
+  font-size: 15px;
+  color: #fff;
+  border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+
+#users {
+        margin: auto;
+  width: 100%;
+  padding: 38px 20px;
+  text-align: center;
+  font-weight: 300;
+  font-size: 15px;
+  color: #fff;
+  vertical-align:middle;
+}
+
+#statistics {
+      margin: auto;
+  width: 100%;
+  padding: 38px 20px;
+  text-align: center;
+  font-weight: 300;
+  font-size: 15px;
+  color: #fff;
+  vertical-align:middle;
+  border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+
+
+</style>
+<div style="font-size: 60px;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 30px;
+  margin-top: 30px;">
+<h2>
+  <%= @room.name %></h2>
+</div>
 <!--
 <div id="user_id" data-url="<%= @current_user.id %>"></div> -->
 
@@ -9,36 +152,123 @@
 
 <div>
     <% alias StreamingRooms.Rooms %>
-    Youtube streams: <%= Rooms.get_youtube_streams_in_room(@room.id) %>
-    Soundcloud streams: <%= Rooms.get_soundcloud_streams_in_room(@room.id) %>
-
-    <%=  response = Rooms.get_users_that_stream_the_most(@room.id) 
-        if response != [] do %>
-            Users that stream the most: 
-            <%= Rooms.get_users_that_stream_the_most(@room.id) 
-                |> Enum.map(fn {k, _v} -> k end) %>
-    <% end %>
 </div>
 
 <!-- Here's going to be the video -->
-<div id="youtube_player"></div>
-
-<iframe id="soundcloud_player" width="400px" height="166px" scrolling="no" frameborder="no"
-    src="https://w.soundcloud.com/player/?url=<%= @room.soundcloud_link %>">
-</iframe>
 
 
-    <div>
-        List of users currently streaming: 
-        <div id="list_of_users_connected">
-            <%= 
-                Rooms.get_users_currently_in_room(@room.id) 
-                |> Enum.map(fn {_id, username} -> username <> ", " end) 
-            %>
-        </div>
+    <marquee scrollamount="7" class="marquee" onmouseover="this.stop();"
+        onmouseout="this.start();">
+
+
+        List of users connected: 
+        <span id="list_of_users_connected"></span>
+    </marquee>
+
+
+
+
+<div class="w3-content w3-margin-top" style="max-width:1400px;">
+
+  <!-- The Grid -->
+  <div class="w3-row-padding">
+  
+    <!-- Left Column -->
+    <div class="w3-third">
+
+        <div class="tbl-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+        <thead>
+        <tr>
+            <th>RANKINGS</th>
+
+        </tr>
+    </thead>
+    </table>
+  </div>
+
+<div class="tbl-content">
+    <table cellpadding="0" cellspacing="0" border="0">
+      <tbody>
+        <tr>
+            <td><%=  response = Rooms.get_users_that_stream_the_most(@room.id) 
+                        if response != [] do %>
+                        <%= Rooms.get_users_that_stream_the_most(@room.id) 
+                      |> Enum.map(fn {k, _v} -> k <> "\n" end) %>
+                <% end %>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<br></br>
+
+<div class="tbl-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+        <thead>
+        <tr>
+            <th>STATISTICS</th>
+
+        </tr>
+    </thead>
+    </table>
+  </div>
+
+<div style="height:200px;
+  width: 340px;
+  overflow-x:auto;
+  margin-top: 0px;
+  border: 1px solid rgba(255,255,255,0.3);">
+    <table cellpadding="0" cellspacing="0" border="0">
+      <tbody>
+        <div id="statistics">
+        Number of YouTube Streams: <%= Rooms.get_youtube_streams_in_room(@room.id) %> </div>
+        <div id="statistics">Number of Soundcloud Streams: <%= Rooms.get_soundcloud_streams_in_room(@room.id) %> 
+            </div>
+    
+    </tbody>
+</table>
+</div>
+<br></br>
+
+
+    <!-- End Left Column -->
     </div>
 
-    <%= link "Back", id: "back_button", to: room_user_path(@conn, :update_user_not_in_room, @room.id), method: :patch %>
+
+    <!-- Right Column -->
+    <div class="w3-twothird">
+        <br> </br>
+        <div class="iframe" id="youtube_player">
+            <img src="<%= @room.youtube_link %>" >
+        </div>
+
+        <br></br>
+
+        <br></br>
+
+        <div class="wrapper your-div" style='text-align:left'>
+            <iframe id="soundcloud_player" width="640px" height="166px" scrolling="no" frameborder="no"
+                src="https://w.soundcloud.com/player/?url=<%= @room.soundcloud_link %>">
+            </iframe>
+        </div>
+
+    <!-- End Right Column -->
+    </div>
+    
+  <!-- End Grid -->
+  </div>
+  
+  <!-- End Page Container -->
+</div>
+
+
+
+
+
+
+
+
 
 <!-- YOUTUBE SCRIPT -->
 <script type="text/javascript">
@@ -109,7 +339,6 @@
             }else{
                 console.log("Stream doesn't count!");
             }
-
             youtubePlayer.loadVideoById(videoId);
         }else if (state == YT.PlayerState.PAUSED){
             timeElapsedOfYoutubeTimer = (new Date()).getTime() - timeYoutubeTimerStarted;

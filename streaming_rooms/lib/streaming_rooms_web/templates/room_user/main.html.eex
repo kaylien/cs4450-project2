@@ -44,7 +44,7 @@
 </table>
 </div>
 <div style="width: 40%; margin: 0 auto; margin-top: 30px; margin-bottom: 30px;">
-    <span style="padding-right: 10px;"><%= link "Joined rooms", to: room_user_path(@conn, :get_rooms_user_is_joined_to), class: "btn btn-default btn-leavepage" %></span>
+    <span style="padding-right: 10px;"><%= link "Joined rooms", id: "back-link",to: room_user_path(@conn, :get_rooms_user_is_joined_to), class: "btn btn-default btn-leavepage" %></span>
 
-    <span><%= link "Create room", to: room_path(@conn, :new) , class: "btn btn-default btn-leavepage" %></span>
+    <span><%= link "Create room", id: "back-link",to: room_path(@conn, :new) , class: "btn btn-default btn-leavepage" %></span>
 </div>
