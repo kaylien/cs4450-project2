@@ -16,7 +16,6 @@
     <div class="container">
       <header class="header">
         <nav role="navigation">
-        <span><%= link "", to: room_user_path(@conn, :get_rooms_user_is_not_joined_to), class: "logo" %></span>
 
           <%= if @current_user do %>
             <span class="text-light">
@@ -25,6 +24,7 @@
           <% end %>
 
         </nav>
+        <span class="logo"></span>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>

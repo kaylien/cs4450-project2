@@ -1,37 +1,40 @@
-<div class="jumbotron">
-  	<h2><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h2>
- 	<p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
-	<a href="<%= session_path(@conn, :login) %>">Login with Twitter!</a>
-</div>
 
-<div class="row marketing">
-  <div class="col-lg-6">
-    <h4>Resources</h4>
-    <ul>
-      <li>
-        <a href="http://phoenixframework.org/docs/overview">Guides</a>
-      </li>
-      <li>
-        <a href="https://hexdocs.pm/phoenix">Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-    </ul>
+
+<div class="center">
+    <a class="twitter-before" href="<%= session_path(@conn, :login) %>"><span class="fontawesome-twitter"></span></a>
+      <button class="twitter" >Login with Twitter!</button>
   </div>
 
-  <div class="col-lg-6">
-    <h4>Help</h4>
-    <ul>
-      <li>
-        <a href="http://groups.google.com/group/phoenix-talk">Mailing list</a>
-      </li>
-      <li>
-        <a href="http://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">@elixirphoenix</a>
-      </li>
-    </ul>
-  </div>
+
+<!--
+<div class="covervid-wrapper" id="background-video">
+   
+    <video class="covervid-video" autoplay loop poster="img/video-fallback.png">
+        <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/130527/example-webm.webm" type="video/webm">
+        <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/130527/example-mp4.mp4" type="video/mp4">
+    </video>
+    
 </div>
+<script>
+    document.getElementById('background-video').play();
+</script>
+
+
+<video class="video" id="background-video" loop>
+  <source src="http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4" type="video/mp4">
+  <source src="http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4" type="video/ogg">
+</video>
+<div class="vid-info">
+    <h1>YouTube Fullscreen Background Demo</h1>
+    <p>The International Space Station orbits the Earth every 92 minutes, with its crew seeing a sunrise 15 times a day. It exists as a scientific, educational, and engineering platform in low orbit, 330 to 435 kilometres above the Earth.
+     <p>Original timelapse by Riccardo Rossi (ISAA), used under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. Raw photos courtesy of http://eol.jsc.nasa.gov/
+   <a href="/500/Use-YouTube-Videos-as-Fullscreen-Web-Page-Backgrounds">Full article</a>
+  </div>
+</div>-->
+
+<div class="video-background">
+    <div class="video-foreground">
+      <iframe src="https://www.youtube.com/embed/W0LHTWG-UmQ?controls=0&showinfo=0&rel=0&autoplay=1&loop=1&playlist=W0LHTWG-UmQ" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </div>
+
