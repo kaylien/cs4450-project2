@@ -1,3 +1,9 @@
-<h2>New Room</h2>
+ <div style=" padding-bottom: : 100px;
+ margin: auto;
+    width: 50%;   color: #ffffff;
+  font-family: 'Lato', sans-serif;
+  font-size: 4em;">
+  <p>New Room</p>
+</div>
 
 <%= render "form.html", Map.put(assigns, :action, room_path(@conn, :create)) %>

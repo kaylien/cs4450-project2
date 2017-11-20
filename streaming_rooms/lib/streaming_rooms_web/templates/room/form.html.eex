@@ -1,3 +1,100 @@
+<style>
+@import url(https://fonts.googleapis.com/css?family=Lato:100,300,400);
+
+
+
+#form {
+  position: relative;
+  width: 500px;
+  margin: 50px auto 100px auto;
+}
+
+input {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.875em;
+  width: 470px;
+  height: 50px;
+  padding: 0px 15px 0px 15px;
+  
+  background: transparent;
+  outline: none;
+  color: #ffffff;
+  
+  border: solid 1px #ffffff;
+  
+  transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+}
+
+input:hover {
+  background: #ffffff;
+  color: #778899;
+}
+
+textarea {
+  width: 470px;
+  max-width: 470px;
+  height: 110px;
+  max-height: 110px;
+  padding: 15px;
+  
+  background: transparent;
+  outline: none;
+  
+  color: #ffffff;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.875em;
+  
+  border: solid 1px #ffffff;
+  
+  transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+}
+
+textarea:hover {
+  background: #ffffff;
+  color: #ffffff;
+}
+
+#submit {
+  width: 475px;
+  height: 50px;
+  
+  padding: 0;
+  margin: -5px 0px 0px 0px;
+  
+  font-family: 'Lato', sans-serif;
+  font-size: 01.2em;
+  color: #b3aca7;
+  
+  outline:none;
+  cursor: pointer;
+  
+  border: solid 1px #ffffff;
+  border-top: none;
+}
+
+#submit:hover {
+  color: #778899;
+}
+
+br {
+  content: " ";
+  display: block;
+  margin: 25px;
+}
+
+</style>
+
+
+  <div style=" margin: auto;
+    width: 50%;   color: #ffffff;
+  font-family: 'Lato', sans-serif;
+  font-size: 1.2em;">
 <%= form_for @changeset, @action, fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
@@ -5,33 +102,59 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= label f, :name, class: "control-label" %>
-    <%= text_input f, :name, class: "form-control" %>
+     <form id="form" class="topBefore">
+
+  <div style=" margin: auto;
+    width: 100%;   color: #ffffff;
+  font-family: 'Lato', sans-serif;
+  font-size: 1.2em;">
+    <span >
+        Name
+    </span>
+</div>
+
+
+    <%= text_input f, :name, class: "input" %>
     <%= error_tag f, :name %>
-  </div>
 
-  <div class="form-group">
-    <%= label f, :soundcloud_link, class: "control-label" %>
-    <%= text_input f, :soundcloud_link, id: "soundcloud_link_id", class: "form-control" %>
+    <br><br/>
+
+
+  <div style=" margin: auto;
+    width: 100%;   color: #ffffff;
+  font-family: 'Lato', sans-serif;
+  font-size: 1.2em;">
+    <span >
+        Soundcloud link
+    </span>
+</div>
+        <%= text_input f, :soundcloud_link, id: "soundcloud_link_id", class: "input" %>
     <%= error_tag f, :soundcloud_link %>
-  </div>
+    <br><br/>
 
-  <div class="form-group">
-    <%= label f, :youtube_link, class: "control-label" %>
-    <%= text_input f, :youtube_link, id: "youtube_link_id", class: "form-control" %>
+  <div style=" margin: auto;
+    width: 100%;   color: #ffffff;
+  font-family: 'Lato', sans-serif;
+  font-size: 01.2em;">
+    <span >
+        Youtube link
+    </span>
+</div>
+        <%= text_input f, :youtube_link, id: "youtube_link_id", class: "input" %>
     <%= error_tag f, :youtube_link %>
-  </div>
 
-  <div class="form-group">
+    <br><br/>
+
     <%= hidden_input f, :admin_id, class: "form-control", value: @current_user.id  %>
     <%= error_tag f, :admin_id %>
-  </div>
 
-  <div class="form-group">
-    <%= submit "Submit", id: "submit_button", class: "btn btn-primary" %>
-  </div>
+    <%= submit "CREATE ROOM", id: "submit", class: "input" %>
+  
+</form>
+</div>
+
 <% end %>
+<br></br>
 
 <script>
 
