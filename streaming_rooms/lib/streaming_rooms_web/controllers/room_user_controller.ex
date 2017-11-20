@@ -184,7 +184,7 @@ defmodule StreamingRoomsWeb.RoomUserController do
 
 
   def update_user_not_in_room(conn, %{"room_id" => room_id}) do
-        result = Rooms.update_user_in_room(conn.assigns.current_user.id, room_id, false)
+        _result = Rooms.update_user_in_room(conn.assigns.current_user.id, room_id, false)
         redirect(conn, to: room_user_path(conn, :get_rooms_user_is_not_joined_to))
   end
 

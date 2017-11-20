@@ -1,6 +1,6 @@
 
 <head>
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/joined.css") %>">
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/joined.css") %>"> 
 </head>
 
 <style type="text/css">
@@ -37,7 +37,7 @@ html, body {
             <tr>
                 <td><%= link room.name, to: room_path(@conn, :show, room.id) %></td>
                 <!--<td><%= room.id %></td>-->
-                <td><span><%= link "Leave", to: room_user_path(@conn, :leave_room, room.id), method: :patch, class: "btn btn-danger btn-xlarge" %></span></td>
+                <td align="right"><span><%= link "Leave", to: room_user_path(@conn, :leave_room, room.id), method: :patch, class: "btn btn-danger btn-xlarge" %></span></td>
             <!--      <td><span><%= button "Leave", to: room_user_path(@conn, :leave_room, room.id), class: "btn btn-default btn-xs" %></span></td> -->
             </tr>
         <% end %>

@@ -29,6 +29,7 @@ body{
   margin-top: 0px;
   border: 1px solid rgba(255,255,255,0.3);
 }
+
 th{
   margin: auto;
   width: 50%;
@@ -39,10 +40,10 @@ th{
   color: #fff;
   text-transform: uppercase;
 }
+
 td{
   padding: 35px 50px;
-
-    padding-left: 120px;
+  padding-left: 120px;
   vertical-align:middle;
   font-weight: 300;
   font-size: 23px;
@@ -58,7 +59,6 @@ td{
        -moz-border-radius: 8px;
             border-radius: 8px;
 }
-
 
 .btn-leavepage {
     padding: 4px 50px;

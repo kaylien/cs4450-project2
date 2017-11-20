@@ -45,15 +45,10 @@ html, body {
     </tbody>
 </table>
 </div>
-<div style="  margin: auto;
-  width: 30%;">
-<span><%= link "Back", to: room_user_path(@conn, :get_rooms_user_is_not_joined_to), class: "btn btn-default btn-leavepage" %></span> 
+<div style="width: 50%; margin: 0 auto; margin-top: 30px; margin-bottom: 30px;">
+    <span style="padding-right: 10px;"><%= link "Back", to: room_user_path(@conn, :get_rooms_user_is_not_joined_to), class: "btn btn-default btn-leavepage" %></span> 
 
+    <span style="padding-right: 10px;"><%= link "Joined Rooms", to: room_user_path(@conn, :get_rooms_user_is_joined_to), class: "btn btn-default btn-leavepage" %></span>
 
-
-
-
-
-<span><%= link "Joined Rooms", to: room_user_path(@conn, :get_rooms_user_is_joined_to), class: "btn btn-default btn-leavepage" %></span>
-
-<span><%= link "Create room", to: room_path(@conn, :new) , class: "btn btn-default btn-leavepage" %></span></div>
+    <span style="padding-right: 10px;"><%= link "Create room", to: room_path(@conn, :new) , class: "btn btn-default btn-leavepage" %></span>
+</div>

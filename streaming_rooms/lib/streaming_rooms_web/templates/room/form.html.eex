@@ -1,8 +1,6 @@
 <style>
 @import url(https://fonts.googleapis.com/css?family=Lato:100,300,400);
 
-
-
 #form {
   position: relative;
   width: 500px;
@@ -159,18 +157,12 @@ br {
 <script>
 
     document.getElementsByTagName('body')[0].onload = function(){
-        var button = $("#submit_button")[0];
-        button.enabled = false;
+        var button = $("#submit")[0];
         var youtube_link = $("#youtube_link_id")[0];
-        youtube_link.addEventListener('input', function(event) { 
+        button.addEventListener('click', function(event) { 
             video_id = checkCorrectYoutubeLink(youtube_link.value);
-            console.log(video_id);
-            if (video_id == null){
-                console.log("Invalid link");
-            }else{
-                console.log("Valid link: " + video_id);
-            }
-        });
+            youtube_link.value = video_id;
+        }, false);
     };
 
     function checkCorrectYoutubeLink(youtube_link){
@@ -185,10 +177,10 @@ br {
                     return video_id[1];
                 }
             }else{
-                return null;
+                return youtube_link;
             }
         }else{
-            return "";
+            return youtube_link;
         }
     }
 

@@ -14,18 +14,19 @@
 
   <body>
     <div class="container">
-      <header class="header">
-        <nav role="navigation">
 
-          <%= if @current_user do %>
-            <span class="text-light">
-              <%= @current_user.username %> | <%= link("logout", to: session_path(@conn, :logout), method: :delete) %>
-            </span>
-          <% end %>
+      <%= if @current_user do %>
+        <header class="header">
+          <nav role="navigation">
+              <span class="text-light">
+                <%= @current_user.username %> | <%= link("logout", to: session_path(@conn, :logout), method: :delete) %>
+              </span>
 
-        </nav>
-        <span class="logo"></span>
-      </header>
+          </nav>
+          <%= link "", to: room_user_path(@conn, :get_rooms_user_is_not_joined_to), class: "logo" %>
+        <!--  <span class="logo"></span>  -->
+        </header>
+      <% end %>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>

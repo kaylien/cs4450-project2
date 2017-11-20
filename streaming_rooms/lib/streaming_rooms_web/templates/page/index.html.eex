@@ -2,7 +2,7 @@
 
 <div class="center">
     <a class="twitter-before" href="<%= session_path(@conn, :login) %>"><span class="fontawesome-twitter"></span></a>
-      <button class="twitter" >Login with Twitter!</button>
+      <%= button "Login with Twitter!", to: session_path(@conn, :login), class: "twitter", method: :get %>
   </div>
 
 
