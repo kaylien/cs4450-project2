@@ -73,3 +73,36 @@ td{
        -moz-border-radius: 8px;
             border-radius: 8px;
 }
+
+
+#back-link, #create-room-link {
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    padding: 4px 50px;
+    color: black;
+    font-size: 15px; //change this to your desired size
+    line-height: normal;
+    -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+            border-radius: 8px;
+}
+/* unvisited link */
+a:link {
+    color: #FFFFFF;
+}
+
+/* visited link */
+a:visited {
+    color: #FFFFFF;
+}
+
+/* mouse over link */
+a:hover {
+    color: #FFFFFF;
+}
+
+/* selected link */
+a:active {
+    color: #FFFFFF;
+}

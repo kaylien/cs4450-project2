@@ -50,8 +50,6 @@
 <% end %>
 
 <div style="text-align: center;">
-
-    <span style="padding-right: 10px;"><%= link "Joined rooms", to: room_user_path(@conn, :get_rooms_user_is_joined_to), class: "btn btn-default btn-leavepage" %></span>
-
-    <span><%= link "Create room", to: room_path(@conn, :new) , class: "btn btn-default btn-leavepage" %></span>
+    <span><%= link "Joined rooms", id: "back-link", to: room_user_path(@conn, :get_rooms_user_is_joined_to), class: "btn btn-default btn-leavepage" %></span>
+    <span><%= link "Create room", id: "create-room-link", to: room_path(@conn, :new) , class: "btn btn-default btn-leavepage" %></span>
 </div>

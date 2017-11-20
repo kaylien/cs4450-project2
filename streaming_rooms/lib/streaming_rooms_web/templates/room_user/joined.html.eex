@@ -1,6 +1,6 @@
 
 <head>
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/joined.css") %>"> 
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/room_user/joined.css") %>">
 </head>
 
 <style type="text/css">
@@ -52,6 +52,6 @@ html, body {
 <% end %>
 
 <div style="margin: auto; width: 30%; text-align:center;">
-  <span><%= link "Back", to: room_user_path(@conn, :get_rooms_user_is_not_joined_to), class: "btn btn-default btn-leavepage" %></span> 
+  <span><%= link "Back", id: "back-link", to: room_user_path(@conn, :get_rooms_user_is_not_joined_to), class: "btn btn-default btn-leavepage" %></span> 
 
 </div>
