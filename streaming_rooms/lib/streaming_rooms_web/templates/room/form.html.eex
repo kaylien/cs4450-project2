@@ -89,10 +89,8 @@ br {
 </style>
 
 
-  <div style=" margin: auto;
-    width: 50%;   color: #ffffff;
-  font-family: 'Lato', sans-serif;
-  font-size: 1.2em;">
+  <div style=" margin: auto;  position: fixed; top: 50%;  left: 50%; /* bring your own prefixes */ transform: translate(-50%, -50%);
+     color: #ffffff; font-family: 'Lato', sans-serif; font-size: 1.2em;">
 <%= form_for @changeset, @action, fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">

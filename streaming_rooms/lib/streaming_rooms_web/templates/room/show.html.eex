@@ -107,7 +107,7 @@
                     }
                 });
             }else{
-                console.log("Stream doesn't count!");
+                console.log("Youtube stream doesn't count!");
             }
 
             youtubePlayer.loadVideoById(videoId);
@@ -136,7 +136,7 @@
             dataType: 'json',
             data: JSON.parse('{"in_room": ' + value + '}'),
             success: function(res) {
-                console.log(res.result);
+                // console.log(res.result);
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 console.log("ERROR " + xhr);

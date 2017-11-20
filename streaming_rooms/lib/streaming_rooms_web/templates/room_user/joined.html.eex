@@ -19,7 +19,7 @@ html, body {
 </style>
 
 <div class="tbl-header">
-<table cellpadding="0" cellspacing="0" border="0">
+  <table cellpadding="0" cellspacing="0" border="0">
     <thead>
         <tr>
             <th>Joined Rooms</th>
@@ -28,22 +28,30 @@ html, body {
         </tr>
     </thead>
     </table>
-  </div>
-<div class="tbl-content">
-    <table cellpadding="0" cellspacing="0" border="0">
-      <tbody>
-        <%= for room <- @rooms do %>
-
-            <tr>
-                <td><%= link room.name, to: room_path(@conn, :show, room.id) %></td>
-                <!--<td><%= room.id %></td>-->
-                <td align="right"><span><%= link "Leave", to: room_user_path(@conn, :leave_room, room.id), method: :patch, class: "btn btn-danger btn-xlarge" %></span></td>
-            <!--      <td><span><%= button "Leave", to: room_user_path(@conn, :leave_room, room.id), class: "btn btn-default btn-xs" %></span></td> -->
-            </tr>
-        <% end %>
-    </tbody>
-</table>
 </div>
-<div style="  margin: auto;
-  width: 30%;">
-<span><%= link "Back", to: room_user_path(@conn, :get_rooms_user_is_not_joined_to), class: "btn btn-default btn-leavepage" %></span> </div>
+<%= if length(@rooms) > 0 do %>
+    <div class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+                <%= for room <- @rooms do %>
+
+                    <tr>
+                        <td><%= link room.name, to: room_path(@conn, :show, room.id) %></td>
+                        <!--<td><%= room.id %></td>-->
+                        <td align="right"><span><%= link "Leave", to: room_user_path(@conn, :leave_room, room.id), method: :patch, class: "btn btn-danger btn-xlarge" %></span></td>
+                    <!--      <td><span><%= button "Leave", to: room_user_path(@conn, :leave_room, room.id), class: "btn btn-default btn-xs" %></span></td> -->
+                    </tr>
+                <% end %>
+            </tbody>
+      </table>
+    </div>          
+<% else %>
+  <div style="margin-top: 60px; margin-bottom: 60px; text-align: center;">
+    <h3 style="color:white;">You are not joined to any rooms yet!<h3>
+  </div>
+<% end %>
+
+<div style="margin: auto; width: 30%; text-align:center;">
+  <span><%= link "Back", to: room_user_path(@conn, :get_rooms_user_is_not_joined_to), class: "btn btn-default btn-leavepage" %></span> 
+
+</div>

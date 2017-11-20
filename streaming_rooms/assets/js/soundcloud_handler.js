@@ -31,6 +31,8 @@ export var SoundcloudModule = {
                 function onPlay(){
                     endedAfterEnoughTime = false;
                     timeSoundcloudTimerStarted = (new Date()).getTime();
+                    console.log(soundcloudDuration);
+                    console.log(soundcloudDuration - totalSoundcloudTime);
                     if (!timeoutVariable){
                         timeoutVariable = setTimeout(function(){ endedAfterEnoughTime = true; }, soundcloudDuration - totalSoundcloudTime);
                     }
