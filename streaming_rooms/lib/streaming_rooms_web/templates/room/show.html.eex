@@ -33,7 +33,10 @@ body{
     padding: 0;
 }
 
-
+#back_button{
+    margin-bottom: 20px;
+    color: black;
+}
 
 /* Make it a marquee */
 .marquee {
@@ -160,9 +163,12 @@ td{
     <marquee scrollamount="7" class="marquee" onmouseover="this.stop();"
         onmouseout="this.start();">
 
-
         List of users connected: 
-        <span id="list_of_users_connected"></span>
+        <span id="list_of_users_connected"><%= 
+                 Rooms.get_users_currently_in_room(@room.id) 
+                 |> Enum.map(fn {_id, username} -> username <> ", " end) 
+             %>
+     </span>
     </marquee>
 
 
@@ -180,7 +186,7 @@ td{
         <table cellpadding="0" cellspacing="0" border="0">
         <thead>
         <tr>
-            <th>RANKINGS</th>
+            <th style="text-align: center !important;">RANKINGS</th>
 
         </tr>
     </thead>
@@ -189,16 +195,13 @@ td{
 
 <div class="tbl-content">
     <table cellpadding="0" cellspacing="0" border="0">
-      <tbody>
-        <tr>
-            <td><%=  response = Rooms.get_users_that_stream_the_most(@room.id) 
-                        if response != [] do %>
-                        <%= Rooms.get_users_that_stream_the_most(@room.id) 
-                      |> Enum.map(fn {k, _v} -> k <> "\n" end) %>
+      <tbody id="tbodyy">
+          <%=  response = Rooms.get_users_that_stream_the_most(@room.id) 
+               if response != [] do %>
+                    <%= raw(Rooms.get_users_that_stream_the_most(@room.id) 
+                  |> Enum.map(fn {k, _v} -> "<tr><td>" <> k <> "</td></tr>" end)) %>
                 <% end %>
-            </td>
-        </tr>
-    </tbody>
+      </tbody>
 </table>
 </div>
 <br></br>
@@ -222,8 +225,8 @@ td{
     <table cellpadding="0" cellspacing="0" border="0">
       <tbody>
         <div id="statistics">
-        Number of YouTube Streams: <%= Rooms.get_youtube_streams_in_room(@room.id) %> </div>
-        <div id="statistics">Number of Soundcloud Streams: <%= Rooms.get_soundcloud_streams_in_room(@room.id) %> 
+        Number of YouTube streams: <%= Rooms.get_youtube_streams_in_room(@room.id) %> </div>
+        <div id="statistics">Number of Soundcloud streams: <%= Rooms.get_soundcloud_streams_in_room(@room.id) %> 
             </div>
     
     </tbody>
@@ -261,15 +264,11 @@ td{
   
   <!-- End Page Container -->
 </div>
-
-
-
-
-
-
-
-
-
+<div style="text-align: center;">
+    <span>
+        <%= link "Back", id: "back_button", to: room_user_path(@conn, :update_user_not_in_room, @room.id), method: :patch, class: "btn btn-default btn-leavepage" %>
+    </span>
+</div>
 <!-- YOUTUBE SCRIPT -->
 <script type="text/javascript">
 
@@ -320,6 +319,7 @@ td{
             timeoutVariable = undefined;
             totalYoutubeTime = 0;
             timeElapsedOfYoutubeTimer = 0;
+            endedAfterEnoughTime = true;
             if (endedAfterEnoughTime){
                 console.log("Youtube stream counts!");
                 $.ajax({
@@ -337,7 +337,7 @@ td{
                     }
                 });
             }else{
-                console.log("Stream doesn't count!");
+                console.log("Youtube stream doesn't count!");
             }
             youtubePlayer.loadVideoById(videoId);
         }else if (state == YT.PlayerState.PAUSED){
@@ -365,7 +365,7 @@ td{
             dataType: 'json',
             data: JSON.parse('{"in_room": ' + value + '}'),
             success: function(res) {
-                console.log(res.result);
+                // console.log(res.result);
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 console.log("ERROR " + xhr);

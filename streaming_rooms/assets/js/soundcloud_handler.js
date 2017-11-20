@@ -14,41 +14,43 @@ export var SoundcloudModule = {
         function onPlayerReady(event) {
             widget.getDuration(function(data){
                 
-                soundcloudDuration = data - 1;
+                var soundcloudDuration = data - 1;
 
                 widget.bind(SC.Widget.Events.PLAY, onPlay);
                 widget.bind(SC.Widget.Events.PAUSE, onPause);
                 widget.bind(SC.Widget.Events.FINISH, onFinish);
 
                 // Variables useful for when the state changes
-                var endedAfterEnoughTime = false;
-                var timeoutVariable;
-                var soundcloudDuration;
+                var endedAfterEnoughTimeSoundcloud = false;
+                var timeoutSoundcloudVariable;
                 var timeSoundcloudTimerStarted;
                 var timeElapsedOfSoundcloudTimer = 0;
                 var totalSoundcloudTime = 0;
 
                 function onPlay(){
-                    endedAfterEnoughTime = false;
+                    endedAfterEnoughTimeSoundcloud = false;
                     timeSoundcloudTimerStarted = (new Date()).getTime();
-                    if (!timeoutVariable){
-                        timeoutVariable = setTimeout(function(){ endedAfterEnoughTime = true; }, soundcloudDuration - totalSoundcloudTime);
+                    console.log(soundcloudDuration);
+                    console.log(soundcloudDuration - totalSoundcloudTime);
+                    if (!timeoutSoundcloudVariable){
+                        timeoutSoundcloudVariable = setTimeout(function(){ endedAfterEnoughTimeSoundcloud = true; }, soundcloudDuration - totalSoundcloudTime);
                     }
                 }
 
                 function onPause(){
                     timeElapsedOfSoundcloudTimer = (new Date()).getTime() - timeSoundcloudTimerStarted;
                     totalSoundcloudTime += timeElapsedOfSoundcloudTimer;
-                    clearTimeout(timeoutVariable);
-                    timeoutVariable = undefined;
+                    clearTimeout(timeoutSoundcloudVariable);
+                    timeoutSoundcloudVariable = undefined;
                 }
 
                 function onFinish(){
-                    clearTimeout(timeoutVariable);
-                    timeoutVariable = undefined;
+                    clearTimeout(timeoutSoundcloudVariable);
+                    timeoutSoundcloudVariable = undefined;
                     totalSoundcloudTime = 0;
                     timeElapsedOfSoundcloudTimer = 0;
-                    if (endedAfterEnoughTime){
+                    endedAfterEnoughTimeSoundcloud = true;
+                    if (endedAfterEnoughTimeSoundcloud){
                         console.log("Soundcloud stream counts!");
                         $.ajax({
                             url: url,

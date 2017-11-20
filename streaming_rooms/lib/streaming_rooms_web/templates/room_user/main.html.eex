@@ -29,22 +29,27 @@
         </thead>
     </table>
 </div>
+<%= if length(@rooms) > 0 do %>
+  <div class="tbl-content container">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tbody>
+          <%= for room <- @rooms do %>
 
-<div class="tbl-content container">
-    <table cellpadding="0" cellspacing="0" border="0">
-      <tbody>
-        <%= for room <- @rooms do %>
+              <tr>
+                  <td><%= room.name %></td>
+                  <td align="right"><span><%= button "Join", to: room_user_path(@conn, :create_room_user, room.id), class: "btn btn-default btn-xlarge" %>    </span></td>
+              </tr>
+          <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div style="margin-top: 60px; margin-bottom: 60px; text-align: center;">
+    <h3 style="color:white;">There are no rooms left for you to join!<h3>
+  </div>
+<% end %>
 
-            <tr>
-                <td><%= room.name %></td>
-                <td align="right"><span><%= button "Join", to: room_user_path(@conn, :create_room_user, room.id), class: "btn btn-default btn-xlarge" %>    </span></td>
-            </tr>
-        <% end %>
-    </tbody>
-</table>
-</div>
-<div style="width: 40%; margin: 0 auto; margin-top: 30px; margin-bottom: 30px;">
-    <span style="padding-right: 10px;"><%= link "Joined rooms", id: "back-link",to: room_user_path(@conn, :get_rooms_user_is_joined_to), class: "btn btn-default btn-leavepage" %></span>
-
-    <span><%= link "Create room", id: "back-link",to: room_path(@conn, :new) , class: "btn btn-default btn-leavepage" %></span>
+<div style="text-align: center;">
+    <span><%= link "Joined rooms", id: "back-link", to: room_user_path(@conn, :get_rooms_user_is_joined_to), class: "btn btn-default btn-leavepage" %></span>
+    <span><%= link "Create room", id: "create-room-link", to: room_path(@conn, :new) , class: "btn btn-default btn-leavepage" %></span>
 </div>
