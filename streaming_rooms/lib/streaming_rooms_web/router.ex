@@ -40,6 +40,8 @@ defmodule StreamingRoomsWeb.Router do
     get "/rooms_users/joined", RoomUserController, :get_rooms_user_is_joined_to
     patch "/rooms_users/leave/:room_id", RoomUserController, :leave_room
 
+    patch "/rooms_users/:room_id/not_in_room", RoomUserController, :update_user_not_in_room
+
     # Default path if none of the above was invoked
     get "/error", ErrorController, :index
     # get "/*path", ErrorController, :index
@@ -56,7 +58,7 @@ defmodule StreamingRoomsWeb.Router do
     patch "/rooms_users/:room_id/youtube", RoomUserController, :increment_youtube_streams
 
     patch "/rooms_users/:room_id/in_room", RoomUserController, :update_user_in_room
-    get "/rooms_users/rooms/:room_id/in_room", RoomUserController, :get_users_currently_in_room
+    # get "/rooms_users/rooms/:room_id/in_room", RoomUserController, :get_users_currently_in_room
   end
 
 end

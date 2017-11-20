@@ -30,6 +30,11 @@ defmodule StreamingRoomsWeb.UpdatesChannel do
     {:noreply, socket}
   end
 
+    def handle_in("user_left_room", payload, socket) do
+    broadcast socket, "user_left_room", payload
+    {:noreply, socket}
+  end
+
   # Add authorization logic here as required.
   defp authorized?(room_id) do
       # For added security: 

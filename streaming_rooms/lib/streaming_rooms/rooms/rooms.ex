@@ -310,6 +310,7 @@ defmodule StreamingRooms.Rooms do
   ###############################################
 
   def update_user_in_room(user_id, room_id, in_room) do
+      IO.puts in_room
       try do
           from(ru in RoomUser, where: ru.room_id == ^room_id 
                 and ru.user_id == ^user_id, update: [set: [in_room: ^in_room]])

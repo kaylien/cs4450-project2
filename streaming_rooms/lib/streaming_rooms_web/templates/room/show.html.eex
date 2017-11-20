@@ -29,8 +29,16 @@
 
 
     <div>
-        List of users connected: <div id="list_of_users_connected"></div>
+        List of users currently streaming: 
+        <div id="list_of_users_connected">
+            <%= 
+                Rooms.get_users_currently_in_room(@room.id) 
+                |> Enum.map(fn {_id, username} -> username <> ", " end) 
+            %>
+        </div>
     </div>
+
+    <%= link "Back", id: "back_button", to: room_user_path(@conn, :update_user_not_in_room, @room.id), method: :patch %>
 
 <!-- YOUTUBE SCRIPT -->
 <script type="text/javascript">
@@ -101,6 +109,7 @@
             }else{
                 console.log("Stream doesn't count!");
             }
+
             youtubePlayer.loadVideoById(videoId);
         }else if (state == YT.PlayerState.PAUSED){
             timeElapsedOfYoutubeTimer = (new Date()).getTime() - timeYoutubeTimerStarted;

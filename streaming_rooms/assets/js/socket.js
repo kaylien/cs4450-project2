@@ -52,34 +52,78 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 // from connect if you don't care about authentication.
 
 
-function onRecievePost(data) {
+function onReceiveUserJoined(data) {
+    
     let listOfUsersDiv = document.getElementById("list_of_users_connected")
     
     if (listOfUsersDiv != undefined){
 
        	var username = data.username
         var value = listOfUsersDiv.innerHTML;
-        var listOfUsernames = value.split(", ");
+        var listOfUsernames = value.split(",");
         var alreadyInList = false;
-        
+        var newListOfUsers = [];
+        var j = 0;
 
-        for(var i=0; i<listOfUsernames.length; i++) {
-            if (listOfUsernames[i] == username){
+        for (var i=0; i<listOfUsernames.length; i++) {
+            if (listOfUsernames[i].trim() == username){
                 alreadyInList = true;
-                break;
+            }
+            if (listOfUsernames[i].trim() != ""){
+                newListOfUsers[j] = listOfUsernames[i];
+                j++;
             }
         }
 
         if (!alreadyInList){
-        	if (listOfUsernames[0] == ""){
+        	if (listOfUsernames[0] == "" || listOfUsernames[listOfUsernames.length-1].trim() == ""){
             	listOfUsersDiv.append(username);
         	}else{
             	listOfUsersDiv.append(", " + username);
         	}
+        }else{
+            listOfUsersDiv.innerHTML = "";
+            for(var i = 0; i<j; i++) {
+                if (i + 1 == j){
+                    listOfUsersDiv.append(newListOfUsers[i]);
+                }else{
+                    listOfUsersDiv.append(newListOfUsers[i] + ", ");
+                }
+            }
         }
 
     }
 
+}
+
+function onReceiveUserLeft(data){
+
+    let listOfUsersDiv = document.getElementById("list_of_users_connected");
+    
+    if (listOfUsersDiv != undefined){
+
+        var username = data.username;
+        var value = listOfUsersDiv.innerHTML;
+        var listOfUsernames = value.split(",");
+        var newListOfUsers = [];
+        var j = 0;
+
+        for (var i=0; i<listOfUsernames.length; i++) {
+            if (listOfUsernames[i].trim() != "" && listOfUsernames[i].trim() != username){
+                newListOfUsers[j] = listOfUsernames[i];
+                j++;
+            }
+        }
+
+        listOfUsersDiv.innerHTML = "";
+        for(var i = 0; i<j; i++) {
+            if (i + 1 == j){
+                listOfUsersDiv.append(newListOfUsers[i]);
+            }else{
+                listOfUsersDiv.append(newListOfUsers[i] + ", ");
+            }
+        }
+    }
 }
 
 if (document.getElementById("list_of_users_connected") != undefined){
@@ -97,8 +141,15 @@ if (document.getElementById("list_of_users_connected") != undefined){
 	    })
 	    .receive("error", resp => { console.log("Unable to join", resp) })
 
+	channel.on("user_just_joined_room", onReceiveUserJoined);
+    channel.on("user_left_room", onReceiveUserLeft)
 
-	channel.on("user_just_joined_room", onRecievePost);
+    var backButton = document.getElementById("back_button");
+    backButton.addEventListener("click", function(){
+        channel.push("user_left_room", {
+            username: username
+        });
+    }, false);
 
 }
 
